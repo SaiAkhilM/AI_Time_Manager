@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import SwiftUI
 
 extension Task {
     enum Priority: String, CaseIterable {
@@ -14,6 +15,15 @@ extension Task {
             case .medium: return "Medium Priority"
             case .event: return "Event/Class"
             case .none: return "Normal"
+            }
+        }
+
+        var color: Color {
+            switch self {
+            case .high: return .red
+            case .medium: return .orange
+            case .event: return .yellow
+            case .none: return .gray
             }
         }
     }

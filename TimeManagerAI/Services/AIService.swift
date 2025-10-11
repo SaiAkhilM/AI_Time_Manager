@@ -2,6 +2,11 @@ import Foundation
 import CoreData
 import Combine
 
+extension Notification.Name {
+    static let taskCreated = Notification.Name("taskCreated")
+    static let taskUpdated = Notification.Name("taskUpdated")
+}
+
 class AIService: ObservableObject {
     @Published var errorMessage: String?
 
@@ -181,7 +186,164 @@ class AIService: ObservableObject {
     }
 
     private func processAIResponse(_ response: String, context: NSManagedObjectContext) async {
+        await parseAndExecuteCommands(response: response, context: context)
+    }
 
+    private func parseAndExecuteCommands(response: String, context: NSManagedObjectContext) async {
+        let lowerResponse = response.lowercased()
+
+        if lowerResponse.contains("i've added") || lowerResponse.contains("i'll add") || lowerResponse.contains("adding") {
+            await parseTaskCreation(response: response, context: context)
+        } else if lowerResponse.contains("i've moved") || lowerResponse.contains("i'll move") || lowerResponse.contains("moving") {
+            await parseTaskMoving(response: response, context: context)
+        } else if lowerResponse.contains("i've scheduled") || lowerResponse.contains("i'll schedule") || lowerResponse.contains("scheduling") {
+            await parseTaskScheduling(response: response, context: context)
+        }
+    }
+
+    private func parseTaskCreation(response: String, context: NSManagedObjectContext) async {
+
+        let patterns = [
+            #"added ([^.]+) to (\w+day) at (\d{1,2}(?::\d{2})?\s*(?:AM|PM|am|pm)?)"#,
+            #"adding ([^.]+) to (\w+day) at (\d{1,2}(?::\d{2})?\s*(?:AM|PM|am|pm)?)"#,
+            #"add ([^.]+) to (\w+day) at (\d{1,2}(?::\d{2})?\s*(?:AM|PM|am|pm)?)"#
+        ]
+
+        for pattern in patterns {
+            if let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) {
+                let nsString = response as NSString
+                let matches = regex.matches(in: response, options: [], range: NSRange(location: 0, length: nsString.length))
+
+                for match in matches {
+                    if match.numberOfRanges >= 4 {
+                        let taskTitle = nsString.substring(with: match.range(at: 1)).trimmingCharacters(in: .whitespaces)
+                        let dayString = nsString.substring(with: match.range(at: 2)).lowercased()
+                        let timeString = nsString.substring(with: match.range(at: 3))
+
+                        if let taskDate = parseRelativeDay(dayString),
+                           let taskTime = parseTime(timeString) {
+
+                            let fullDateTime = Calendar.current.date(bySettingHour: Calendar.current.component(.hour, from: taskTime),
+                                                                   minute: Calendar.current.component(.minute, from: taskTime),
+                                                                   second: 0,
+                                                                   of: taskDate) ?? taskDate
+
+                            let endTime = Calendar.current.date(byAdding: .hour, value: 1, to: fullDateTime)
+
+                            await MainActor.run {
+                                let task = Task.create(
+                                    in: context,
+                                    title: taskTitle,
+                                    description: nil,
+                                    priority: .none,
+                                    startTime: fullDateTime,
+                                    endTime: endTime,
+                                    date: taskDate
+                                )
+
+                                do {
+                                    try context.save()
+                                    print("✅ Created task: \(taskTitle) on \(taskDate) at \(timeString)")
+
+                                    NotificationCenter.default.post(name: .taskCreated, object: task)
+                                } catch {
+                                    print("❌ Failed to save task: \(error)")
+                                }
+                            }
+                            return
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private func parseTaskMoving(response: String, context: NSManagedObjectContext) async {
+
+    }
+
+    private func parseTaskScheduling(response: String, context: NSManagedObjectContext) async {
+
+    }
+
+    private func parseRelativeDay(_ dayString: String) -> Date? {
+        let today = Date()
+        let calendar = Calendar.current
+
+        switch dayString.lowercased() {
+        case "today":
+            return today
+        case "tomorrow":
+            return calendar.date(byAdding: .day, value: 1, to: today)
+        case "monday":
+            return getNextWeekday(.monday, from: today)
+        case "tuesday":
+            return getNextWeekday(.tuesday, from: today)
+        case "wednesday":
+            return getNextWeekday(.wednesday, from: today)
+        case "thursday":
+            return getNextWeekday(.thursday, from: today)
+        case "friday":
+            return getNextWeekday(.friday, from: today)
+        case "saturday":
+            return getNextWeekday(.saturday, from: today)
+        case "sunday":
+            return getNextWeekday(.sunday, from: today)
+        default:
+            return nil
+        }
+    }
+
+    private func getNextWeekday(_ targetWeekday: Calendar.Component, from date: Date) -> Date? {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: date)
+
+        let weekdayValue: Int
+        switch targetWeekday {
+        case .sunday: weekdayValue = 1
+        case .monday: weekdayValue = 2
+        case .tuesday: weekdayValue = 3
+        case .wednesday: weekdayValue = 4
+        case .thursday: weekdayValue = 5
+        case .friday: weekdayValue = 6
+        case .saturday: weekdayValue = 7
+        default: return nil
+        }
+
+        let currentWeekday = calendar.component(.weekday, from: today)
+        let daysUntilTarget = (weekdayValue - currentWeekday + 7) % 7
+
+        if daysUntilTarget == 0 {
+            return today
+        } else {
+            return calendar.date(byAdding: .day, value: daysUntilTarget, to: today)
+        }
+    }
+
+    private func parseTime(_ timeString: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+
+        if let date = formatter.date(from: timeString) {
+            return date
+        }
+
+        formatter.dateFormat = "h a"
+        if let date = formatter.date(from: timeString) {
+            return date
+        }
+
+        formatter.dateFormat = "HH:mm"
+        if let date = formatter.date(from: timeString) {
+            return date
+        }
+
+        formatter.dateFormat = "H"
+        if let date = formatter.date(from: timeString) {
+            return date
+        }
+
+        return nil
     }
 
     func clearConversationHistory() {

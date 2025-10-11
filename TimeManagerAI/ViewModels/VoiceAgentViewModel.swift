@@ -3,6 +3,11 @@ import CoreData
 import Combine
 import AVFoundation
 
+extension Notification.Name {
+    static let taskCreated = Notification.Name("taskCreated")
+    static let taskUpdated = Notification.Name("taskUpdated")
+}
+
 @MainActor
 class VoiceAgentViewModel: ObservableObject {
     @Published var isRecording = false

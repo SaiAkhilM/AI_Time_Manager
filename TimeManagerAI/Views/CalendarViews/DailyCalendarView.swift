@@ -1,61 +1,99 @@
 import SwiftUI
+import CoreData
 
 struct DailyCalendarView: View {
-    @State private var selectedDate = Date()
+    @Environment(\.managedObjectContext) private var viewContext
+    @StateObject private var calendarViewModel: CalendarViewModel
     @State private var scrollOffset: CGFloat = 0
 
     private let timeSlots = Array(6...23)
-    private let sampleTasks: [SampleTimeBlock] = [
-        SampleTimeBlock(title: "5C Class", startHour: 8, endHour: 9, priority: .medium),
-        SampleTimeBlock(title: "ODE Class", startHour: 10, endHour: 11, priority: .medium),
-        SampleTimeBlock(title: "Meeting with Kathryn", startHour: 13, endHour: 14, priority: .event),
-        SampleTimeBlock(title: "Work Block", startHour: 14, endHour: 17, priority: .high),
-        SampleTimeBlock(title: "M24 Class", startHour: 17, endHour: 18, priority: .event),
-        SampleTimeBlock(title: "Gym", startHour: 19, endHour: 20, priority: .none)
-    ]
+
+    init() {
+        self._calendarViewModel = StateObject(wrappedValue: CalendarViewModel(context: PersistenceController.shared.container.viewContext))
+    }
 
     var body: some View {
         VStack(spacing: 0) {
-            DateHeader(selectedDate: $selectedDate)
+            DateHeader(
+                selectedDate: $calendarViewModel.selectedDate,
+                onDateChange: { days in
+                    calendarViewModel.changeDate(by: days)
+                }
+            )
 
             GeometryReader { geometry in
-                ScrollView {
-                    VStack(spacing: 0) {
-                        ForEach(timeSlots, id: \.self) { hour in
-                            TimeSlotRow(
-                                hour: hour,
-                                tasks: sampleTasks.filter { $0.startHour == hour },
-                                width: geometry.size.width
-                            )
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        VStack(spacing: 0) {
+                            ForEach(timeSlots, id: \.self) { hour in
+                                TimeSlotRow(
+                                    hour: hour,
+                                    tasks: getTasksForHour(hour),
+                                    events: getEventsForHour(hour),
+                                    width: geometry.size.width
+                                )
+                                .id(hour)
+                            }
                         }
                     }
-                }
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        withAnimation {
-                            scrollToCurrentTime()
+                    .onAppear {
+                        scrollToCurrentTime(proxy: proxy)
+                    }
+                    .onChange(of: calendarViewModel.selectedDate) { _ in
+                        if Calendar.current.isDateInToday(calendarViewModel.selectedDate) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                scrollToCurrentTime(proxy: proxy)
+                            }
                         }
                     }
                 }
             }
+
+            if let errorMessage = calendarViewModel.errorMessage {
+                Text(errorMessage)
+                    .font(.caption)
+                    .foregroundColor(.red)
+                    .padding()
+            }
+        }
+        .onAppear {
+            calendarViewModel.refreshData()
         }
     }
 
-    private func scrollToCurrentTime() {
+    private func getTasksForHour(_ hour: Int) -> [Task] {
+        return calendarViewModel.tasks.filter { task in
+            guard let startTime = task.startTime else { return false }
+            let taskHour = Calendar.current.component(.hour, from: startTime)
+            return taskHour == hour
+        }
+    }
+
+    private func getEventsForHour(_ hour: Int) -> [Event] {
+        return calendarViewModel.events.filter { event in
+            guard let startTime = event.startTime else { return false }
+            let eventHour = Calendar.current.component(.hour, from: startTime)
+            return eventHour == hour
+        }
+    }
+
+    private func scrollToCurrentTime(proxy: ScrollViewReader) {
         let currentHour = Calendar.current.component(.hour, from: Date())
-        if currentHour >= 6 && currentHour <= 23 {
-            let targetOffset = CGFloat(currentHour - 6) * 60
-            scrollOffset = targetOffset
+        if currentHour >= 6 && currentHour <= 23 && Calendar.current.isDateInToday(calendarViewModel.selectedDate) {
+            withAnimation(.easeInOut(duration: 0.5)) {
+                proxy.scrollTo(currentHour, anchor: .center)
+            }
         }
     }
 }
 
 struct DateHeader: View {
     @Binding var selectedDate: Date
+    let onDateChange: (Int) -> Void
 
     var body: some View {
         HStack {
-            Button(action: { changeDate(by: -1) }) {
+            Button(action: { onDateChange(-1) }) {
                 Image(systemName: "chevron.left")
                     .font(.title2)
                     .foregroundColor(.blue)
@@ -75,7 +113,7 @@ struct DateHeader: View {
 
             Spacer()
 
-            Button(action: { changeDate(by: 1) }) {
+            Button(action: { onDateChange(1) }) {
                 Image(systemName: "chevron.right")
                     .font(.title2)
                     .foregroundColor(.blue)
@@ -84,17 +122,12 @@ struct DateHeader: View {
         .padding()
         .background(Color(.systemGray6))
     }
-
-    private func changeDate(by days: Int) {
-        if let newDate = Calendar.current.date(byAdding: .day, value: days, to: selectedDate) {
-            selectedDate = newDate
-        }
-    }
 }
 
 struct TimeSlotRow: View {
     let hour: Int
-    let tasks: [SampleTimeBlock]
+    let tasks: [Task]
+    let events: [Event]
     let width: CGFloat
 
     var body: some View {
@@ -120,9 +153,21 @@ struct TimeSlotRow: View {
                         .fill(Color.clear)
                         .frame(height: 60)
 
-                    ForEach(tasks, id: \.title) { task in
-                        TaskBlock(task: task)
-                            .frame(maxWidth: .infinity)
+                    if tasks.isEmpty && events.isEmpty {
+                        Rectangle()
+                            .fill(Color.clear)
+                            .frame(height: 60)
+                    } else {
+                        VStack(spacing: 2) {
+                            ForEach(tasks, id: \.id) { task in
+                                RealTaskBlock(task: task)
+                            }
+
+                            ForEach(events, id: \.id) { event in
+                                RealEventBlock(event: event)
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
             }
@@ -131,50 +176,80 @@ struct TimeSlotRow: View {
     }
 }
 
-struct TaskBlock: View {
-    let task: SampleTimeBlock
+struct RealTaskBlock: View {
+    let task: Task
 
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text(task.title)
+                Text(task.title ?? "Untitled Task")
                     .font(.caption)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
+                    .lineLimit(1)
 
-                Text("\(task.startHour):00 - \(task.endHour):00")
-                    .font(.caption2)
-                    .foregroundColor(.white.opacity(0.8))
+                if let startTime = task.startTime, let endTime = task.endTime {
+                    Text("\(startTime, format: .dateTime.hour().minute()) - \(endTime, format: .dateTime.hour().minute())")
+                        .font(.caption2)
+                        .foregroundColor(.white.opacity(0.8))
+                } else if let startTime = task.startTime {
+                    Text("\(startTime, format: .dateTime.hour().minute())")
+                        .font(.caption2)
+                        .foregroundColor(.white.opacity(0.8))
+                }
+            }
+
+            Spacer()
+
+            if task.isCompleted {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.caption)
+                    .foregroundColor(.white)
+            }
+        }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 4)
+        .background(task.priorityEnum.color)
+        .cornerRadius(6)
+        .padding(.horizontal, 4)
+        .padding(.vertical, 1)
+    }
+}
+
+struct RealEventBlock: View {
+    let event: Event
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(event.title ?? "Untitled Event")
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                    .lineLimit(1)
+
+                if let startTime = event.startTime, let endTime = event.endTime {
+                    Text("\(startTime, format: .dateTime.hour().minute()) - \(endTime, format: .dateTime.hour().minute())")
+                        .font(.caption2)
+                        .foregroundColor(.white.opacity(0.8))
+                }
+
+                if let location = event.location, !location.isEmpty {
+                    Text(location)
+                        .font(.caption2)
+                        .foregroundColor(.white.opacity(0.8))
+                        .lineLimit(1)
+                }
             }
 
             Spacer()
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
-        .background(task.priority.color)
+        .background(Color.blue)
         .cornerRadius(6)
         .padding(.horizontal, 4)
-        .padding(.vertical, 2)
-    }
-}
-
-struct SampleTimeBlock {
-    let title: String
-    let startHour: Int
-    let endHour: Int
-    let priority: TaskPriority
-}
-
-enum TaskPriority {
-    case high, medium, event, none
-
-    var color: Color {
-        switch self {
-        case .high: return .red
-        case .medium: return .orange
-        case .event: return .blue
-        case .none: return .gray
-        }
+        .padding(.vertical, 1)
     }
 }
 

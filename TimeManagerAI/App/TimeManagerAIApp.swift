@@ -9,6 +9,17 @@ struct TimeManagerAIApp: App {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .onAppear {
+                    createSampleDataIfNeeded()
+                }
+        }
+    }
+
+    private func createSampleDataIfNeeded() {
+        let context = persistenceController.container.viewContext
+
+        if SampleDataManager.shouldCreateSampleData(in: context) {
+            SampleDataManager.createSampleTasks(in: context)
         }
     }
 }
