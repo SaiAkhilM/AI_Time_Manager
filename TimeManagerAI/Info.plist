@@ -13,5 +13,9 @@
 		<string>background-processing</string>
 		<string>background-fetch</string>
 	</array>
+	<key>OPENAI_API_KEY</key>
+	<string>your_openai_api_key_here</string>
+	<key>ELEVENLABS_API_KEY</key>
+	<string>your_elevenlabs_api_key_here</string>
 </dict>
 </plist>
