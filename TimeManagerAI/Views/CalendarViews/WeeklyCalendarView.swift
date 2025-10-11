@@ -1,8 +1,15 @@
 import SwiftUI
+import CoreData
 
 struct WeeklyCalendarView: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    @StateObject private var calendarViewModel: CalendarViewModel
     @State private var currentWeek = Date()
     private let calendar = Calendar.current
+
+    init() {
+        self._calendarViewModel = StateObject(wrappedValue: CalendarViewModel(context: PersistenceController.shared.container.viewContext))
+    }
 
     private var weekDays: [Date] {
         guard let weekStart = calendar.dateInterval(of: .weekOfYear, for: currentWeek)?.start else {
@@ -21,10 +28,16 @@ struct WeeklyCalendarView: View {
             ScrollView {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 1), count: 7), spacing: 1) {
                     ForEach(weekDays, id: \.self) { day in
-                        DayColumn(date: day)
+                        DayColumn(date: day, calendarViewModel: calendarViewModel)
                     }
                 }
             }
+        }
+        .onAppear {
+            calendarViewModel.refreshData()
+        }
+        .onChange(of: currentWeek) { _ in
+            calendarViewModel.refreshData()
         }
     }
 }
@@ -89,26 +102,40 @@ struct WeekHeader: View {
 
 struct DayColumn: View {
     let date: Date
+    let calendarViewModel: CalendarViewModel
+    @State private var showingTaskSheet = false
+    @State private var selectedTask: Task?
 
-    private let sampleEvents: [WeekEvent] = [
-        WeekEvent(title: "5C", time: "8:00", priority: .medium, dayOffset: 0),
-        WeekEvent(title: "ODE", time: "10:40", priority: .medium, dayOffset: 0),
-        WeekEvent(title: "Work", time: "14:00", priority: .high, dayOffset: 0),
-        WeekEvent(title: "5C Lab", time: "8:30", priority: .medium, dayOffset: 1),
-        WeekEvent(title: "Meeting", time: "13:30", priority: .event, dayOffset: 1),
-        WeekEvent(title: "5C", time: "8:00", priority: .medium, dayOffset: 2),
-        WeekEvent(title: "Gym", time: "19:00", priority: .none, dayOffset: 2)
-    ]
+    private var dayTasks: [Task] {
+        return calendarViewModel.getTasksForDate(date)
+    }
 
-    private var dayEvents: [WeekEvent] {
-        let dayOfWeek = Calendar.current.component(.weekday, from: date) - 1
-        return sampleEvents.filter { $0.dayOffset == dayOfWeek }
+    private var dayEvents: [Event] {
+        let request: NSFetchRequest<Event> = Event.fetchRequest()
+        let startOfDay = Calendar.current.startOfDay(for: date)
+        let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay) ?? Date()
+
+        request.predicate = NSPredicate(format: "startTime >= %@ AND startTime < %@", startOfDay as NSDate, endOfDay as NSDate)
+
+        do {
+            return try calendarViewModel.context.fetch(request)
+        } catch {
+            return []
+        }
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            ForEach(dayEvents, id: \.title) { event in
-                WeekEventBlock(event: event)
+            ForEach(dayTasks, id: \.id) { task in
+                WeekTaskBlock(task: task)
+                    .onTapGesture {
+                        selectedTask = task
+                        showingTaskSheet = true
+                    }
+            }
+
+            ForEach(dayEvents, id: \.id) { event in
+                WeekEventBlockReal(event: event)
             }
 
             Spacer(minLength: 200)
@@ -116,36 +143,177 @@ struct DayColumn: View {
         .frame(maxWidth: .infinity, minHeight: 300, alignment: .top)
         .padding(.horizontal, 2)
         .background(Color(.systemBackground))
+        .sheet(isPresented: $showingTaskSheet) {
+            if let task = selectedTask {
+                TaskDetailSheet(task: task, calendarViewModel: calendarViewModel)
+            }
+        }
     }
 }
 
-struct WeekEventBlock: View {
-    let event: WeekEvent
+struct WeekTaskBlock: View {
+    let task: Task
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 1) {
-            Text(event.title)
-                .font(.caption2)
-                .fontWeight(.medium)
-                .foregroundColor(.white)
-                .lineLimit(1)
+        HStack {
+            VStack(alignment: .leading, spacing: 1) {
+                Text(task.title ?? "Untitled Task")
+                    .font(.caption2)
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                    .lineLimit(1)
 
-            Text(event.time)
-                .font(.caption2)
-                .foregroundColor(.white.opacity(0.8))
+                if let startTime = task.startTime {
+                    Text(startTime.formatted(.dateTime.hour().minute()))
+                        .font(.caption2)
+                        .foregroundColor(.white.opacity(0.8))
+                }
+            }
+
+            Spacer()
+
+            if task.isCompleted {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.caption2)
+                    .foregroundColor(.white)
+            }
         }
         .padding(.horizontal, 4)
         .padding(.vertical, 3)
-        .background(event.priority.color)
+        .background(task.priorityEnum.color)
         .cornerRadius(4)
     }
 }
 
-struct WeekEvent {
-    let title: String
-    let time: String
-    let priority: TaskPriority
-    let dayOffset: Int
+struct WeekEventBlockReal: View {
+    let event: Event
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 1) {
+                Text(event.title ?? "Untitled Event")
+                    .font(.caption2)
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                    .lineLimit(1)
+
+                if let startTime = event.startTime {
+                    Text(startTime.formatted(.dateTime.hour().minute()))
+                        .font(.caption2)
+                        .foregroundColor(.white.opacity(0.8))
+                }
+            }
+
+            Spacer()
+        }
+        .padding(.horizontal, 4)
+        .padding(.vertical, 3)
+        .background(Color.blue)
+        .cornerRadius(4)
+    }
+}
+
+struct TaskDetailSheet: View {
+    let task: Task
+    let calendarViewModel: CalendarViewModel
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationView {
+            VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Task Details")
+                        .font(.headline)
+
+                    Text(task.title ?? "Untitled Task")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(task.priorityEnum.color)
+                }
+
+                if let description = task.taskDescription, !description.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Description")
+                            .font(.headline)
+                        Text(description)
+                            .font(.body)
+                    }
+                }
+
+                if let startTime = task.startTime, let endTime = task.endTime {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Time")
+                            .font(.headline)
+                        Text("\(startTime.formatted(.dateTime.hour().minute())) - \(endTime.formatted(.dateTime.hour().minute()))")
+                            .font(.body)
+                    }
+                }
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Priority")
+                        .font(.headline)
+                    Text(task.priorityEnum.displayName)
+                        .font(.body)
+                        .foregroundColor(task.priorityEnum.color)
+                }
+
+                if let linkedURL = task.linkedURL, !linkedURL.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Link")
+                            .font(.headline)
+                        Link(linkedURL, destination: URL(string: linkedURL) ?? URL(string: "https://example.com")!)
+                            .font(.body)
+                    }
+                }
+
+                Spacer()
+
+                VStack(spacing: 12) {
+                    if !task.isCompleted {
+                        Button(action: {
+                            calendarViewModel.completeTask(task)
+                            dismiss()
+                        }) {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                Text("Mark Complete")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.green)
+                            .foregroundColor(.white)
+                            .cornerRadius(12)
+                        }
+                    }
+
+                    Button(action: {
+                        calendarViewModel.deleteTask(task)
+                        dismiss()
+                    }) {
+                        HStack {
+                            Image(systemName: "trash.fill")
+                            Text("Delete Task")
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
+                    }
+                }
+            }
+            .padding()
+            .navigationTitle("Task")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
 }
 
 #Preview {

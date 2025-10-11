@@ -10,7 +10,7 @@ class CalendarViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     private var cancellables = Set<AnyCancellable>()
-    private let context: NSManagedObjectContext
+    let context: NSManagedObjectContext
 
     init(context: NSManagedObjectContext) {
         self.context = context
