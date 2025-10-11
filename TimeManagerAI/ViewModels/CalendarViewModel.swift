@@ -12,10 +12,18 @@ class CalendarViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     let context: NSManagedObjectContext
     private let notificationService = NotificationService()
-    private var liveActivityService: Any? // LiveActivityService for iOS 16.1+
+    private var liveActivityService: Any?
+    private let intelligentSchedulingService: IntelligentSchedulingService
+    private let contextAwareOptimizationService: ContextAwareOptimizationService
+    private let smartDeadlineManager: SmartDeadlineManager
+    private let predictiveTimeEstimationService: PredictiveTimeEstimationService // LiveActivityService for iOS 16.1+
 
     init(context: NSManagedObjectContext) {
         self.context = context
+        self.intelligentSchedulingService = IntelligentSchedulingService(context: context)
+        self.contextAwareOptimizationService = ContextAwareOptimizationService(context: context)
+        self.smartDeadlineManager = SmartDeadlineManager(context: context)
+        self.predictiveTimeEstimationService = PredictiveTimeEstimationService(context: context)
 
         if #available(iOS 16.1, *) {
             liveActivityService = LiveActivityService()
@@ -255,5 +263,76 @@ class CalendarViewModel: ObservableObject {
 
     func refreshData() {
         loadDataForSelectedDate()
+    }
+
+    func getSchedulingSuggestions(for task: Task) async -> [SchedulingSuggestion] {
+        return await intelligentSchedulingService.generateSchedulingSuggestions(for: task)
+    }
+
+    func optimizeSchedule(for date: Date) async -> [SchedulingSuggestion] {
+        return await intelligentSchedulingService.optimizeExistingSchedule(for: date)
+    }
+
+    func getOptimizationSuggestions() async {
+        await contextAwareOptimizationService.analyzeAndOptimizeSchedule()
+    }
+
+    func analyzeDeadlines() async {
+        await smartDeadlineManager.analyzeDeadlines()
+    }
+
+    func estimateTaskDuration(title: String, description: String? = nil, priority: Task.Priority = .medium) async -> TimeEstimate {
+        return await predictiveTimeEstimationService.estimateTaskDuration(
+            title: title,
+            description: description,
+            priority: priority
+        )
+    }
+
+    func createTaskWithAI(title: String, description: String? = nil, priority: Task.Priority, date: Date) async {
+        let estimate = await estimateTaskDuration(title: title, description: description, priority: priority)
+        let suggestions = await getSchedulingSuggestionsForNewTask(title: title, estimatedDuration: estimate.estimatedDuration, date: date)
+
+        if let bestSuggestion = suggestions.first {
+            createTask(
+                title: title,
+                description: description,
+                priority: priority,
+                date: date,
+                startTime: bestSuggestion.suggestedStartTime,
+                endTime: bestSuggestion.suggestedEndTime
+            )
+        } else {
+            createTask(
+                title: title,
+                description: description,
+                priority: priority,
+                date: date,
+                startTime: nil,
+                endTime: Date().addingTimeInterval(estimate.estimatedDuration)
+            )
+        }
+    }
+
+    private func getSchedulingSuggestionsForNewTask(title: String, estimatedDuration: TimeInterval, date: Date) async -> [SchedulingSuggestion] {
+        let tempTask = Task(context: context)
+        tempTask.title = title
+        tempTask.id = UUID()
+        tempTask.date = date
+
+        let suggestions = await intelligentSchedulingService.generateSchedulingSuggestions(for: tempTask)
+        context.delete(tempTask)
+        return suggestions
+    }
+
+    func updateTaskCompletionTime(_ task: Task, actualDuration: TimeInterval) {
+        guard let title = task.title else { return }
+
+        let estimatedDuration = task.endTime?.timeIntervalSince(task.startTime ?? Date()) ?? 3600
+        predictiveTimeEstimationService.updateEstimationAccuracy(
+            actualDuration: actualDuration,
+            estimatedDuration: estimatedDuration,
+            taskTitle: title
+        )
     }
 }

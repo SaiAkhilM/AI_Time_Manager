@@ -14,6 +14,11 @@
 		1D4A5A342C9F8E5C00123456 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A322C9F8E5C00123456 /* DataModel.xcdatamodeld */; };
 		1D4A5A402C9F8E6000123456 /* TaskActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A3F2C9F8E6000123456 /* TaskActivityWidget.swift */; };
 		1D4A5A422C9F8E6000123456 /* TaskActivityWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A412C9F8E6000123456 /* TaskActivityWidgetBundle.swift */; };
+		1D4A5A442C9F8E7000123456 /* IntelligentSchedulingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A432C9F8E7000123456 /* IntelligentSchedulingService.swift */; };
+		1D4A5A462C9F8E7000123456 /* ContextAwareOptimizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A452C9F8E7000123456 /* ContextAwareOptimizationService.swift */; };
+		1D4A5A482C9F8E7000123456 /* SmartDeadlineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A472C9F8E7000123456 /* SmartDeadlineManager.swift */; };
+		1D4A5A4A2C9F8E7000123456 /* PredictiveTimeEstimationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A492C9F8E7000123456 /* PredictiveTimeEstimationService.swift */; };
+		1D4A5A4C2C9F8E8000123456 /* AIInsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A4B2C9F8E8000123456 /* AIInsightsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +31,11 @@
 		1D4A5A352C9F8E5C00123456 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D4A5A3F2C9F8E6000123456 /* TaskActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskActivityWidget.swift; sourceTree = "<group>"; };
 		1D4A5A412C9F8E6000123456 /* TaskActivityWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskActivityWidgetBundle.swift; sourceTree = "<group>"; };
+		1D4A5A432C9F8E7000123456 /* IntelligentSchedulingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligentSchedulingService.swift; sourceTree = "<group>"; };
+		1D4A5A452C9F8E7000123456 /* ContextAwareOptimizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextAwareOptimizationService.swift; sourceTree = "<group>"; };
+		1D4A5A472C9F8E7000123456 /* SmartDeadlineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartDeadlineManager.swift; sourceTree = "<group>"; };
+		1D4A5A492C9F8E7000123456 /* PredictiveTimeEstimationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictiveTimeEstimationService.swift; sourceTree = "<group>"; };
+		1D4A5A4B2C9F8E8000123456 /* AIInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIInsightsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +110,7 @@
 		1D4A5A3C2C9F8F1E00123456 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1D4A5A4B2C9F8E8000123456 /* AIInsightsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -114,6 +125,10 @@
 		1D4A5A3E2C9F8F2A00123456 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				1D4A5A432C9F8E7000123456 /* IntelligentSchedulingService.swift */,
+				1D4A5A452C9F8E7000123456 /* ContextAwareOptimizationService.swift */,
+				1D4A5A472C9F8E7000123456 /* SmartDeadlineManager.swift */,
+				1D4A5A492C9F8E7000123456 /* PredictiveTimeEstimationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -209,6 +224,11 @@
 				1D4A5A2B2C9F8E5A00123456 /* TimeManagerAIApp.swift in Sources */,
 				1D4A5A402C9F8E6000123456 /* TaskActivityWidget.swift in Sources */,
 				1D4A5A422C9F8E6000123456 /* TaskActivityWidgetBundle.swift in Sources */,
+				1D4A5A442C9F8E7000123456 /* IntelligentSchedulingService.swift in Sources */,
+				1D4A5A462C9F8E7000123456 /* ContextAwareOptimizationService.swift in Sources */,
+				1D4A5A482C9F8E7000123456 /* SmartDeadlineManager.swift in Sources */,
+				1D4A5A4A2C9F8E7000123456 /* PredictiveTimeEstimationService.swift in Sources */,
+				1D4A5A4C2C9F8E8000123456 /* AIInsightsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

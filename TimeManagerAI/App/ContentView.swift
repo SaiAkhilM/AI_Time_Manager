@@ -26,12 +26,19 @@ struct ContentView: View {
                 }
                 .tag(2)
 
+            AIInsightsView()
+                .tabItem {
+                    Image(systemName: "brain.head.profile")
+                    Text("AI Insights")
+                }
+                .tag(3)
+
             SettingsView()
                 .tabItem {
                     Image(systemName: "gearshape.fill")
                     Text("Settings")
                 }
-                .tag(3)
+                .tag(4)
         }
         .accentColor(.blue)
     }
