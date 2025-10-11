@@ -22,11 +22,18 @@ class VoiceAgentViewModel: ObservableObject {
     private let voiceService = VoiceService()
     private let aiService = AIService()
     private let textToSpeechService = TextToSpeechService()
+    private let notificationService = NotificationService()
+    private var liveActivityService: Any?
     private var recordingURL: URL?
     private var cancellables = Set<AnyCancellable>()
 
     init() {
+        if #available(iOS 16.1, *) {
+            liveActivityService = LiveActivityService()
+        }
+
         setupBindings()
+        setupNotificationObservers()
     }
 
     private func setupBindings() {
@@ -58,6 +65,41 @@ class VoiceAgentViewModel: ObservableObject {
         textToSpeechService.$errorMessage
             .receive(on: DispatchQueue.main)
             .assign(to: \.errorMessage, on: self)
+            .store(in: &cancellables)
+    }
+
+    private func setupNotificationObservers() {
+        NotificationCenter.default.publisher(for: .taskCreated)
+            .sink { [weak self] notification in
+                if let task = notification.object as? Task {
+                    self?.notificationService.scheduleAllNotificationsForTask(task)
+
+                    if #available(iOS 16.1, *),
+                       let service = self?.liveActivityService as? LiveActivityService {
+                        service.startTaskActivity(for: task)
+                    }
+                }
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: .taskUpdated)
+            .sink { [weak self] notification in
+                if let task = notification.object as? Task {
+                    self?.notificationService.cancelNotifications(for: task)
+                    if !task.isCompleted {
+                        self?.notificationService.scheduleAllNotificationsForTask(task)
+                    }
+
+                    if #available(iOS 16.1, *),
+                       let service = self?.liveActivityService as? LiveActivityService {
+                        if task.isCompleted {
+                            service.endCurrentActivity()
+                        } else {
+                            service.updateTaskActivity(task: task, isCompleted: task.isCompleted)
+                        }
+                    }
+                }
+            }
             .store(in: &cancellables)
     }
 

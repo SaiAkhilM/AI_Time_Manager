@@ -11,12 +11,20 @@ class CalendarViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
     let context: NSManagedObjectContext
+    private let notificationService = NotificationService()
+    private var liveActivityService: Any? // LiveActivityService for iOS 16.1+
 
     init(context: NSManagedObjectContext) {
         self.context = context
+
+        if #available(iOS 16.1, *) {
+            liveActivityService = LiveActivityService()
+        }
+
         loadDataForSelectedDate()
         setupDateChangeObserver()
         setupNotificationObservers()
+        setupNotificationPermissions()
     }
 
     private func setupDateChangeObserver() {
@@ -29,20 +37,42 @@ class CalendarViewModel: ObservableObject {
 
     private func setupNotificationObservers() {
         NotificationCenter.default.publisher(for: .taskCreated)
-            .sink { [weak self] _ in
+            .sink { [weak self] notification in
                 DispatchQueue.main.async {
                     self?.refreshData()
+
+                    if let task = notification.object as? Task {
+                        self?.notificationService.scheduleAllNotificationsForTask(task)
+
+                        if #available(iOS 16.1, *),
+                           let service = self?.liveActivityService as? LiveActivityService {
+                            service.startTaskActivity(for: task)
+                        }
+                    }
                 }
             }
             .store(in: &cancellables)
 
         NotificationCenter.default.publisher(for: .taskUpdated)
-            .sink { [weak self] _ in
+            .sink { [weak self] notification in
                 DispatchQueue.main.async {
                     self?.refreshData()
+
+                    if let task = notification.object as? Task {
+                        self?.notificationService.cancelNotifications(for: task)
+                        if !task.isCompleted {
+                            self?.notificationService.scheduleAllNotificationsForTask(task)
+                        }
+                    }
                 }
             }
             .store(in: &cancellables)
+    }
+
+    private func setupNotificationPermissions() {
+        Task {
+            await notificationService.requestNotificationPermission()
+        }
     }
 
     func loadDataForSelectedDate() {
