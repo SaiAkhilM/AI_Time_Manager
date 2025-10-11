@@ -19,6 +19,11 @@
 		1D4A5A482C9F8E7000123456 /* SmartDeadlineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A472C9F8E7000123456 /* SmartDeadlineManager.swift */; };
 		1D4A5A4A2C9F8E7000123456 /* PredictiveTimeEstimationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A492C9F8E7000123456 /* PredictiveTimeEstimationService.swift */; };
 		1D4A5A4C2C9F8E8000123456 /* AIInsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A4B2C9F8E8000123456 /* AIInsightsView.swift */; };
+		1D4A5A4E2C9F8E9000123456 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A4D2C9F8E9000123456 /* OnboardingView.swift */; };
+		1D4A5A502C9F8E9000123456 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A4F2C9F8E9000123456 /* TutorialView.swift */; };
+		1D4A5A522C9F8EA000123456 /* DataExportImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A512C9F8EA000123456 /* DataExportImportService.swift */; };
+		1D4A5A542C9F8EA000123456 /* DataManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A532C9F8EA000123456 /* DataManagementView.swift */; };
+		1D4A5A562C9F8EB000123456 /* AnimatedComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A552C9F8EB000123456 /* AnimatedComponents.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +41,11 @@
 		1D4A5A472C9F8E7000123456 /* SmartDeadlineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartDeadlineManager.swift; sourceTree = "<group>"; };
 		1D4A5A492C9F8E7000123456 /* PredictiveTimeEstimationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictiveTimeEstimationService.swift; sourceTree = "<group>"; };
 		1D4A5A4B2C9F8E8000123456 /* AIInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIInsightsView.swift; sourceTree = "<group>"; };
+		1D4A5A4D2C9F8E9000123456 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		1D4A5A4F2C9F8E9000123456 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		1D4A5A512C9F8EA000123456 /* DataExportImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExportImportService.swift; sourceTree = "<group>"; };
+		1D4A5A532C9F8EA000123456 /* DataManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagementView.swift; sourceTree = "<group>"; };
+		1D4A5A552C9F8EB000123456 /* AnimatedComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedComponents.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +121,10 @@
 			isa = PBXGroup;
 			children = (
 				1D4A5A4B2C9F8E8000123456 /* AIInsightsView.swift */,
+				1D4A5A4D2C9F8E9000123456 /* OnboardingView.swift */,
+				1D4A5A4F2C9F8E9000123456 /* TutorialView.swift */,
+				1D4A5A532C9F8EA000123456 /* DataManagementView.swift */,
+				1D4A5A552C9F8EB000123456 /* AnimatedComponents.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -129,6 +143,7 @@
 				1D4A5A452C9F8E7000123456 /* ContextAwareOptimizationService.swift */,
 				1D4A5A472C9F8E7000123456 /* SmartDeadlineManager.swift */,
 				1D4A5A492C9F8E7000123456 /* PredictiveTimeEstimationService.swift */,
+				1D4A5A512C9F8EA000123456 /* DataExportImportService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -229,6 +244,11 @@
 				1D4A5A482C9F8E7000123456 /* SmartDeadlineManager.swift in Sources */,
 				1D4A5A4A2C9F8E7000123456 /* PredictiveTimeEstimationService.swift in Sources */,
 				1D4A5A4C2C9F8E8000123456 /* AIInsightsView.swift in Sources */,
+				1D4A5A4E2C9F8E9000123456 /* OnboardingView.swift in Sources */,
+				1D4A5A502C9F8E9000123456 /* TutorialView.swift in Sources */,
+				1D4A5A522C9F8EA000123456 /* DataExportImportService.swift in Sources */,
+				1D4A5A542C9F8EA000123456 /* DataManagementView.swift in Sources */,
+				1D4A5A562C9F8EB000123456 /* AnimatedComponents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
