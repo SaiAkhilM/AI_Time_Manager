@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="23A344" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Task" representedClassName="Task" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="title" optional="NO" attributeType="String"/>
+        <attribute name="taskDescription" optional="YES" attributeType="String"/>
+        <attribute name="priority" optional="NO" attributeType="String" defaultValueString="none"/>
+        <attribute name="startTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="endTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isRecurring" optional="NO" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isCompleted" optional="NO" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="linkedURL" optional="YES" attributeType="String"/>
+        <attribute name="estimatedDuration" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="actualDuration" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="createdAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="updatedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="parentTask" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="subtasks"/>
+        <relationship name="subtasks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Task" inverseName="parentTask"/>
+        <relationship name="recurrencePattern" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RecurrencePattern" inverseName="task"/>
+        <relationship name="goal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Goal" inverseName="tasks"/>
+    </entity>
+    <entity name="Event" representedClassName="Event" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="title" optional="NO" attributeType="String"/>
+        <attribute name="eventDescription" optional="YES" attributeType="String"/>
+        <attribute name="startTime" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="endTime" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isRecurring" optional="NO" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="location" optional="YES" attributeType="String"/>
+        <attribute name="isMovable" optional="NO" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="priority" optional="NO" attributeType="String" defaultValueString="yellow"/>
+        <attribute name="createdAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="updatedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="recurrencePattern" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RecurrencePattern" inverseName="event"/>
+    </entity>
+    <entity name="Goal" representedClassName="Goal" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="title" optional="NO" attributeType="String"/>
+        <attribute name="goalDescription" optional="YES" attributeType="String"/>
+        <attribute name="targetHoursPerWeek" optional="NO" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="isActive" optional="NO" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="createdAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="updatedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="goal"/>
+    </entity>
+    <entity name="RecurrencePattern" representedClassName="RecurrencePattern" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="frequency" optional="NO" attributeType="String"/>
+        <attribute name="interval" optional="NO" attributeType="Integer 32" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="daysOfWeek" optional="YES" attributeType="String"/>
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="createdAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="recurrencePattern"/>
+        <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Event" inverseName="recurrencePattern"/>
+    </entity>
+    <entity name="Settings" representedClassName="Settings" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="sleepStartTime" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="sleepEndTime" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="sleepPriority" optional="NO" attributeType="String" defaultValueString="unmovable"/>
+        <attribute name="bedtimeWarningMinutes" optional="NO" attributeType="Integer 32" defaultValueString="30" usesScalarValueType="YES"/>
+        <attribute name="notificationsEnabled" optional="NO" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="taskRemindersEnabled" optional="NO" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="deadlineWarningsEnabled" optional="NO" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="sleepWarningsEnabled" optional="NO" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="voiceSpeed" optional="NO" attributeType="Float" defaultValueString="1.0" usesScalarValueType="YES"/>
+        <attribute name="aiPersonality" optional="NO" attributeType="String" defaultValueString="professional"/>
+        <attribute name="autoReschedule" optional="NO" attributeType="String" defaultValueString="smart"/>
+        <attribute name="calendarStartHour" optional="NO" attributeType="Integer 32" defaultValueString="6" usesScalarValueType="YES"/>
+        <attribute name="calendarEndHour" optional="NO" attributeType="Integer 32" defaultValueString="24" usesScalarValueType="YES"/>
+        <attribute name="timeIncrement" optional="NO" attributeType="Integer 32" defaultValueString="15" usesScalarValueType="YES"/>
+        <attribute name="colorTheme" optional="NO" attributeType="String" defaultValueString="auto"/>
+        <attribute name="weeklyContextReset" optional="NO" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="updatedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="ConversationContext" representedClassName="ConversationContext" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="messages" optional="YES" attributeType="String"/>
+        <attribute name="weekNumber" optional="NO" attributeType="Integer 32" usesScalarValueType="YES"/>
+        <attribute name="lastUpdated" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="currentContext" optional="YES" attributeType="String"/>
+    </entity>
+</model>
