@@ -73,7 +73,7 @@ struct DocEditorView: View {
                 }
             }
             .onAppear {
-                documentViewModel.generateWeeklyDocument()
+                documentViewModel.viewDidAppear()
             }
         }
     }

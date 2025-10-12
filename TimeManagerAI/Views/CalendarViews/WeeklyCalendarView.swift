@@ -34,7 +34,7 @@ struct WeeklyCalendarView: View {
             }
         }
         .onAppear {
-            calendarViewModel.refreshData()
+            calendarViewModel.viewDidAppear()
         }
         .onChange(of: currentWeek) { _ in
             calendarViewModel.refreshData()

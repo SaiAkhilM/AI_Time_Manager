@@ -14,8 +14,7 @@ struct ContentView: View {
                 .tag(0)
 
             // Planner Tab
-            Text("Document Planner")
-                .font(.title)
+            DocEditorView()
                 .tabItem {
                     Image(systemName: "doc.text.fill")
                     Text("Planner")
@@ -23,8 +22,7 @@ struct ContentView: View {
                 .tag(1)
 
             // Calendar Tab
-            Text("Calendar")
-                .font(.title)
+            CalendarContainerView()
                 .tabItem {
                     Image(systemName: "calendar")
                     Text("Calendar")
@@ -32,8 +30,7 @@ struct ContentView: View {
                 .tag(2)
 
             // AI Insights Tab
-            Text("AI Insights")
-                .font(.title)
+            AIInsightsView()
                 .tabItem {
                     Image(systemName: "brain.head.profile")
                     Text("AI Insights")

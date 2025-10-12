@@ -67,7 +67,7 @@ struct DailyCalendarView: View {
             }
         }
         .onAppear {
-            calendarViewModel.refreshData()
+            calendarViewModel.viewDidAppear()
         }
     }
 
