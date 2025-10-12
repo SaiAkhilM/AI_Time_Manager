@@ -17,6 +17,11 @@ class DocumentViewModel: ObservableObject {
         self.context = context
         self.currentWeekNumber = Calendar.current.component(.weekOfYear, from: Date())
         setupNotificationObservers()
+        // Defer document generation until view appears - prevents KeyPath errors during init
+    }
+
+    /// Call this method when the view appears to safely load Core Data
+    func viewDidAppear() {
         generateWeeklyDocument()
     }
 

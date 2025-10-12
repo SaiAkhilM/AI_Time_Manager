@@ -29,10 +29,15 @@ class CalendarViewModel: ObservableObject {
             liveActivityService = LiveActivityService()
         }
 
-        loadDataForSelectedDate()
+        // Defer data loading until view appears - prevents KeyPath errors during init
         setupDateChangeObserver()
         setupNotificationObservers()
         setupNotificationPermissions()
+    }
+
+    /// Call this method when the view appears to safely load Core Data
+    func viewDidAppear() {
+        loadDataForSelectedDate()
     }
 
     private func setupDateChangeObserver() {

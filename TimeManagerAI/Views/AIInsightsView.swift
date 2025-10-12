@@ -3,11 +3,11 @@ import CoreData
 
 struct AIInsightsView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @StateObject private var calendarViewModel = CalendarViewModel(context: PersistenceController.shared.container.viewContext)
-    @StateObject private var intelligentSchedulingService = IntelligentSchedulingService(context: PersistenceController.shared.container.viewContext)
-    @StateObject private var contextAwareOptimizationService = ContextAwareOptimizationService(context: PersistenceController.shared.container.viewContext)
-    @StateObject private var smartDeadlineManager = SmartDeadlineManager(context: PersistenceController.shared.container.viewContext)
-    @StateObject private var predictiveTimeEstimationService = PredictiveTimeEstimationService(context: PersistenceController.shared.container.viewContext)
+    @StateObject private var calendarViewModel: CalendarViewModel
+    @StateObject private var intelligentSchedulingService: IntelligentSchedulingService
+    @StateObject private var contextAwareOptimizationService: ContextAwareOptimizationService
+    @StateObject private var smartDeadlineManager: SmartDeadlineManager
+    @StateObject private var predictiveTimeEstimationService: PredictiveTimeEstimationService
 
     @State private var isAnalyzing = false
     @State private var selectedTab = 0
@@ -67,6 +67,7 @@ struct AIInsightsView: View {
                 }
             }
             .onAppear {
+                calendarViewModel.viewDidAppear()
                 refreshAllInsights()
             }
         }
