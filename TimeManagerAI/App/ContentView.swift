@@ -1,22 +1,51 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selectedTab = 0
+
     var body: some View {
-        VStack {
-            Text("Time Manager AI")
-                .font(.largeTitle)
-                .padding()
+        TabView(selection: $selectedTab) {
+            // Voice Agent Tab
+            VoiceAgentView()
+                .tabItem {
+                    Image(systemName: "mic.fill")
+                    Text("Voice")
+                }
+                .tag(0)
 
-            Text("App loaded successfully!")
-                .font(.title2)
-                .foregroundColor(.green)
-                .padding()
+            // Planner Tab
+            DocEditorView()
+                .tabItem {
+                    Image(systemName: "doc.text.fill")
+                    Text("Planner")
+                }
+                .tag(1)
 
-            Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 60))
-                .foregroundColor(.green)
-                .padding()
+            // Calendar Tab
+            CalendarContainerView()
+                .tabItem {
+                    Image(systemName: "calendar")
+                    Text("Calendar")
+                }
+                .tag(2)
+
+            // AI Insights Tab
+            AIInsightsView()
+                .tabItem {
+                    Image(systemName: "brain.head.profile")
+                    Text("AI Insights")
+                }
+                .tag(3)
+
+            // Settings Tab
+            SettingsView()
+                .tabItem {
+                    Image(systemName: "gearshape.fill")
+                    Text("Settings")
+                }
+                .tag(4)
         }
+        .accentColor(.blue)
     }
 }
 

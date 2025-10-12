@@ -17,6 +17,9 @@ struct TimeManagerAIApp: App {
                     .onAppear {
                         print("✅ Loading ContentView")
                     }
+
+                    // Tutorial overlay
+                    TutorialTriggerView()
                 } else {
                     OnboardingView()
                         .environment(\.managedObjectContext, persistenceController.container.viewContext)
