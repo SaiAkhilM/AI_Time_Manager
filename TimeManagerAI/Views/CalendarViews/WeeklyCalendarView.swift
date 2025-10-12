@@ -3,7 +3,7 @@ import CoreData
 
 struct WeeklyCalendarView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @StateObject private var calendarViewModel: CalendarViewModel
+    @StateObject private var calendarViewModel = CalendarViewModel(context: PersistenceController.shared.container.viewContext)
     @State private var currentWeek = Date()
     private let calendar = Calendar.current
 

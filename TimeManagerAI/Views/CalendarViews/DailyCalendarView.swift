@@ -3,7 +3,7 @@ import CoreData
 
 struct DailyCalendarView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @StateObject private var calendarViewModel: CalendarViewModel
+    @StateObject private var calendarViewModel = CalendarViewModel(context: PersistenceController.shared.container.viewContext)
     @State private var scrollOffset: CGFloat = 0
 
     private let timeSlots = Array(6...23)

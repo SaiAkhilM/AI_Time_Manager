@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="23A344" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
-    <entity name="Task" representedClassName="Task" syncable="YES" codeGenerationType="class">
+    <entity name="Task" representedClassName="TaskEntity" syncable="YES" codeGenerationType="manual">
         <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="title" optional="NO" attributeType="String"/>
         <attribute name="taskDescription" optional="YES" attributeType="String"/>
@@ -20,7 +20,7 @@
         <relationship name="recurrencePattern" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RecurrencePattern" inverseName="task"/>
         <relationship name="goal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Goal" inverseName="tasks"/>
     </entity>
-    <entity name="Event" representedClassName="Event" syncable="YES" codeGenerationType="class">
+    <entity name="Event" representedClassName="Event" syncable="YES" codeGenerationType="manual">
         <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="title" optional="NO" attributeType="String"/>
         <attribute name="eventDescription" optional="YES" attributeType="String"/>
@@ -34,7 +34,7 @@
         <attribute name="updatedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="recurrencePattern" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RecurrencePattern" inverseName="event"/>
     </entity>
-    <entity name="Goal" representedClassName="Goal" syncable="YES" codeGenerationType="class">
+    <entity name="Goal" representedClassName="Goal" syncable="YES" codeGenerationType="manual">
         <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="title" optional="NO" attributeType="String"/>
         <attribute name="goalDescription" optional="YES" attributeType="String"/>
@@ -44,7 +44,7 @@
         <attribute name="updatedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="goal"/>
     </entity>
-    <entity name="RecurrencePattern" representedClassName="RecurrencePattern" syncable="YES" codeGenerationType="class">
+    <entity name="RecurrencePattern" representedClassName="RecurrencePattern" syncable="YES" codeGenerationType="manual">
         <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="frequency" optional="NO" attributeType="String"/>
         <attribute name="interval" optional="NO" attributeType="Integer 32" defaultValueString="1" usesScalarValueType="YES"/>
@@ -54,7 +54,7 @@
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="recurrencePattern"/>
         <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Event" inverseName="recurrencePattern"/>
     </entity>
-    <entity name="Settings" representedClassName="Settings" syncable="YES" codeGenerationType="class">
+    <entity name="Settings" representedClassName="Settings" syncable="YES" codeGenerationType="manual">
         <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="sleepStartTime" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="sleepEndTime" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
@@ -74,7 +74,7 @@
         <attribute name="weeklyContextReset" optional="NO" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="updatedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
-    <entity name="ConversationContext" representedClassName="ConversationContext" syncable="YES" codeGenerationType="class">
+    <entity name="ConversationContext" representedClassName="ConversationContext" syncable="YES" codeGenerationType="manual">
         <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="messages" optional="YES" attributeType="String"/>
         <attribute name="weekNumber" optional="NO" attributeType="Integer 32" usesScalarValueType="YES"/>

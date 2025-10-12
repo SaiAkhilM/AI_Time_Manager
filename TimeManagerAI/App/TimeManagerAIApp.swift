@@ -4,23 +4,29 @@ import CoreData
 @main
 struct TimeManagerAIApp: App {
     private let persistenceController = PersistenceController.shared
-    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding: Bool = false
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding: Bool = true
 
     var body: some Scene {
         WindowGroup {
             ZStack {
                 if hasCompletedOnboarding {
-                    ContentView()
-                        .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                        .overlay(
-                            TutorialTriggerView()
-                        )
+                    Group {
+                        ContentView()
+                    }
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .onAppear {
+                        print("✅ Loading ContentView")
+                    }
                 } else {
                     OnboardingView()
                         .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                        .onAppear {
+                            print("✅ Loading OnboardingView")
+                        }
                 }
             }
             .onAppear {
+                print("✅ App started, hasCompletedOnboarding: \(hasCompletedOnboarding)")
                 if hasCompletedOnboarding {
                     createSampleDataIfNeeded()
                 }

@@ -12,7 +12,10 @@ struct PersistenceController {
         container.loadPersistentStores { _, error in
             if let error = error {
                 // Don't crash, just print the error for now
-                print("Core Data error (non-fatal): \(error)")
+                print("🔴 Core Data error (non-fatal): \(error)")
+                print("🔴 Core Data failed to load stores")
+            } else {
+                print("✅ Core Data loaded successfully")
             }
         }
 
