@@ -45,13 +45,13 @@ struct OnboardingView: View {
 
     private func saveUserPreferences() {
         let settings = Settings.getOrCreate(in: viewContext)
-        settings.userName = userName.isEmpty ? "User" : userName
-        settings.workStartTime = selectedWorkHours.startTime
-        settings.workEndTime = selectedWorkHours.endTime
-        settings.enableTaskReminders = selectedNotificationPreferences.taskReminders
-        settings.enableDeadlineWarnings = selectedNotificationPreferences.deadlineWarnings
-        settings.enableBreakReminders = selectedNotificationPreferences.breakReminders
-        settings.bedtimeWarningMinutes = Int16(selectedNotificationPreferences.bedtimeWarning)
+        // Configure basic settings
+        settings.calendarStartHour = Int32(Calendar.current.component(.hour, from: selectedWorkHours.startTime))
+        settings.calendarEndHour = Int32(Calendar.current.component(.hour, from: selectedWorkHours.endTime))
+        settings.taskRemindersEnabled = selectedNotificationPreferences.taskReminders
+        settings.deadlineWarningsEnabled = selectedNotificationPreferences.deadlineWarnings
+        settings.sleepWarningsEnabled = selectedNotificationPreferences.breakReminders
+        settings.bedtimeWarningMinutes = Int32(selectedNotificationPreferences.bedtimeWarning)
 
         do {
             try viewContext.save()

@@ -11,19 +11,43 @@
 		1D4A5A2D2C9F8E5A00123456 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A2C2C9F8E5A00123456 /* ContentView.swift */; };
 		1D4A5A2F2C9F8E5C00123456 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D4A5A2E2C9F8E5C00123456 /* Assets.xcassets */; };
 		1D4A5A322C9F8E5C00123456 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D4A5A312C9F8E5C00123456 /* Preview Assets.xcassets */; };
-		1D4A5A342C9F8E5C00123456 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A322C9F8E5C00123456 /* DataModel.xcdatamodeld */; };
-		1D4A5A402C9F8E6000123456 /* TaskActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A3F2C9F8E6000123456 /* TaskActivityWidget.swift */; };
-		1D4A5A422C9F8E6000123456 /* TaskActivityWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A412C9F8E6000123456 /* TaskActivityWidgetBundle.swift */; };
-		1D4A5A442C9F8E7000123456 /* IntelligentSchedulingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A432C9F8E7000123456 /* IntelligentSchedulingService.swift */; };
-		1D4A5A462C9F8E7000123456 /* ContextAwareOptimizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A452C9F8E7000123456 /* ContextAwareOptimizationService.swift */; };
-		1D4A5A482C9F8E7000123456 /* SmartDeadlineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A472C9F8E7000123456 /* SmartDeadlineManager.swift */; };
-		1D4A5A4A2C9F8E7000123456 /* PredictiveTimeEstimationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A492C9F8E7000123456 /* PredictiveTimeEstimationService.swift */; };
-		1D4A5A4C2C9F8E8000123456 /* AIInsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A4B2C9F8E8000123456 /* AIInsightsView.swift */; };
-		1D4A5A4E2C9F8E9000123456 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A4D2C9F8E9000123456 /* OnboardingView.swift */; };
-		1D4A5A502C9F8E9000123456 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A4F2C9F8E9000123456 /* TutorialView.swift */; };
-		1D4A5A522C9F8EA000123456 /* DataExportImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A512C9F8EA000123456 /* DataExportImportService.swift */; };
-		1D4A5A542C9F8EA000123456 /* DataManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A532C9F8EA000123456 /* DataManagementView.swift */; };
-		1D4A5A562C9F8EB000123456 /* AnimatedComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A552C9F8EB000123456 /* AnimatedComponents.swift */; };
+		1D4A5A342C9F8E5C00123456 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A332C9F8E5C00123456 /* DataModel.xcdatamodeld */; };
+		1D4A5A622C9F8E5A00123459 /* SampleDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A612C9F8E5A00123459 /* SampleDataManager.swift */; };
+		1D4A5A702C9F8E5A0012345A /* TaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A6F2C9F8E5A0012345A /* TaskModel.swift */; };
+		1D4A5A722C9F8E5A0012345B /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A712C9F8E5A0012345B /* EventModel.swift */; };
+		1D4A5A742C9F8E5A0012345C /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A732C9F8E5A0012345C /* SettingsModel.swift */; };
+		1D4A5ABC2C9F8E5A00123499 /* CoreDataEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5ABB2C9F8E5A00123499 /* CoreDataEntities.swift */; };
+		1D4A5ABE2C9F8E5A0012349A /* GoalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5ABD2C9F8E5A0012349A /* GoalModel.swift */; };
+		1D4A5A762C9F8E5A0012345D /* VoiceAgentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A752C9F8E5A0012345D /* VoiceAgentView.swift */; };
+		1D4A5A782C9F8E5A0012345E /* DocEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A772C9F8E5A0012345E /* DocEditorView.swift */; };
+		1D4A5A7A2C9F8E5A0012345F /* RichTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A792C9F8E5A0012345F /* RichTextEditor.swift */; };
+		1D4A5A7C2C9F8E5A00123460 /* AIInsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A7B2C9F8E5A00123460 /* AIInsightsView.swift */; };
+		1D4A5A7E2C9F8E5A00123461 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A7D2C9F8E5A00123461 /* SettingsView.swift */; };
+		1D4A5A802C9F8E5A00123462 /* CalendarContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A7F2C9F8E5A00123462 /* CalendarContainerView.swift */; };
+		1D4A5A822C9F8E5A00123463 /* DailyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A812C9F8E5A00123463 /* DailyCalendarView.swift */; };
+		1D4A5A842C9F8E5A00123464 /* WeeklyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A832C9F8E5A00123464 /* WeeklyCalendarView.swift */; };
+		1D4A5A862C9F8E5A00123465 /* MonthlyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A852C9F8E5A00123465 /* MonthlyCalendarView.swift */; };
+		1D4A5A882C9F8E5A00123466 /* YearlyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A872C9F8E5A00123466 /* YearlyCalendarView.swift */; };
+		1D4A5A8A2C9F8E5A00123467 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A892C9F8E5A00123467 /* OnboardingView.swift */; };
+		1D4A5A8C2C9F8E5A00123468 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A8B2C9F8E5A00123468 /* TutorialView.swift */; };
+		1D4A5A8E2C9F8E5A00123469 /* DataManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A8D2C9F8E5A00123469 /* DataManagementView.swift */; };
+		1D4A5A902C9F8E5A0012346A /* AnimatedComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A8F2C9F8E5A0012346A /* AnimatedComponents.swift */; };
+		1D4A5A922C9F8E5A0012346B /* VoiceAgentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A912C9F8E5A0012346B /* VoiceAgentViewModel.swift */; };
+		1D4A5A942C9F8E5A0012346C /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A932C9F8E5A0012346C /* CalendarViewModel.swift */; };
+		1D4A5A962C9F8E5A0012346D /* DocumentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A952C9F8E5A0012346D /* DocumentViewModel.swift */; };
+		1D4A5A982C9F8E5A0012346E /* VoiceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A972C9F8E5A0012346E /* VoiceService.swift */; };
+		1D4A5A9A2C9F8E5A0012346F /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A992C9F8E5A0012346F /* AIService.swift */; };
+		1D4A5A9C2C9F8E5A00123470 /* TextToSpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A9B2C9F8E5A00123470 /* TextToSpeechService.swift */; };
+		1D4A5A9E2C9F8E5A00123471 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A9D2C9F8E5A00123471 /* NotificationService.swift */; };
+		1D4A5AA02C9F8E5A00123472 /* LiveActivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A9F2C9F8E5A00123472 /* LiveActivityService.swift */; };
+		1D4A5AA22C9F8E5A00123473 /* IntelligentSchedulingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5AA12C9F8E5A00123473 /* IntelligentSchedulingService.swift */; };
+		1D4A5AA42C9F8E5A00123474 /* ContextAwareOptimizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5AA32C9F8E5A00123474 /* ContextAwareOptimizationService.swift */; };
+		1D4A5AA62C9F8E5A00123475 /* SmartDeadlineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5AA52C9F8E5A00123475 /* SmartDeadlineManager.swift */; };
+		1D4A5AA82C9F8E5A00123476 /* PredictiveTimeEstimationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5AA72C9F8E5A00123476 /* PredictiveTimeEstimationService.swift */; };
+		1D4A5AAA2C9F8E5A00123477 /* DataExportImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5AA92C9F8E5A00123477 /* DataExportImportService.swift */; };
+		1D4A5AAC2C9F8E5A00123478 /* TaskActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5AAB2C9F8E5A00123478 /* TaskActivityWidget.swift */; };
+		1D4A5AAE2C9F8E5A00123479 /* TaskActivityWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5AAD2C9F8E5A00123479 /* TaskActivityWidgetBundle.swift */; };
+		1D4A5AB02C9F8E5A00123480 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5AAF2C9F8E5A00123480 /* PersistenceController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,18 +58,42 @@
 		1D4A5A312C9F8E5C00123456 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1D4A5A332C9F8E5C00123456 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		1D4A5A352C9F8E5C00123456 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1D4A5A3F2C9F8E6000123456 /* TaskActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskActivityWidget.swift; sourceTree = "<group>"; };
-		1D4A5A412C9F8E6000123456 /* TaskActivityWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskActivityWidgetBundle.swift; sourceTree = "<group>"; };
-		1D4A5A432C9F8E7000123456 /* IntelligentSchedulingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligentSchedulingService.swift; sourceTree = "<group>"; };
-		1D4A5A452C9F8E7000123456 /* ContextAwareOptimizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextAwareOptimizationService.swift; sourceTree = "<group>"; };
-		1D4A5A472C9F8E7000123456 /* SmartDeadlineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartDeadlineManager.swift; sourceTree = "<group>"; };
-		1D4A5A492C9F8E7000123456 /* PredictiveTimeEstimationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictiveTimeEstimationService.swift; sourceTree = "<group>"; };
-		1D4A5A4B2C9F8E8000123456 /* AIInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIInsightsView.swift; sourceTree = "<group>"; };
-		1D4A5A4D2C9F8E9000123456 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		1D4A5A4F2C9F8E9000123456 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
-		1D4A5A512C9F8EA000123456 /* DataExportImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExportImportService.swift; sourceTree = "<group>"; };
-		1D4A5A532C9F8EA000123456 /* DataManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagementView.swift; sourceTree = "<group>"; };
-		1D4A5A552C9F8EB000123456 /* AnimatedComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedComponents.swift; sourceTree = "<group>"; };
+		1D4A5A612C9F8E5A00123459 /* SampleDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDataManager.swift; sourceTree = "<group>"; };
+		1D4A5A6F2C9F8E5A0012345A /* TaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskModel.swift; sourceTree = "<group>"; };
+		1D4A5A712C9F8E5A0012345B /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
+		1D4A5A732C9F8E5A0012345C /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
+		1D4A5ABB2C9F8E5A00123499 /* CoreDataEntities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataEntities.swift; sourceTree = "<group>"; };
+		1D4A5ABD2C9F8E5A0012349A /* GoalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalModel.swift; sourceTree = "<group>"; };
+		1D4A5A752C9F8E5A0012345D /* VoiceAgentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceAgentView.swift; sourceTree = "<group>"; };
+		1D4A5A772C9F8E5A0012345E /* DocEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocEditorView.swift; sourceTree = "<group>"; };
+		1D4A5A792C9F8E5A0012345F /* RichTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextEditor.swift; sourceTree = "<group>"; };
+		1D4A5A7B2C9F8E5A00123460 /* AIInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIInsightsView.swift; sourceTree = "<group>"; };
+		1D4A5A7D2C9F8E5A00123461 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		1D4A5A7F2C9F8E5A00123462 /* CalendarContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarContainerView.swift; sourceTree = "<group>"; };
+		1D4A5A812C9F8E5A00123463 /* DailyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCalendarView.swift; sourceTree = "<group>"; };
+		1D4A5A832C9F8E5A00123464 /* WeeklyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCalendarView.swift; sourceTree = "<group>"; };
+		1D4A5A852C9F8E5A00123465 /* MonthlyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyCalendarView.swift; sourceTree = "<group>"; };
+		1D4A5A872C9F8E5A00123466 /* YearlyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YearlyCalendarView.swift; sourceTree = "<group>"; };
+		1D4A5A892C9F8E5A00123467 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		1D4A5A8B2C9F8E5A00123468 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		1D4A5A8D2C9F8E5A00123469 /* DataManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagementView.swift; sourceTree = "<group>"; };
+		1D4A5A8F2C9F8E5A0012346A /* AnimatedComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedComponents.swift; sourceTree = "<group>"; };
+		1D4A5A912C9F8E5A0012346B /* VoiceAgentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceAgentViewModel.swift; sourceTree = "<group>"; };
+		1D4A5A932C9F8E5A0012346C /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		1D4A5A952C9F8E5A0012346D /* DocumentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewModel.swift; sourceTree = "<group>"; };
+		1D4A5A972C9F8E5A0012346E /* VoiceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceService.swift; sourceTree = "<group>"; };
+		1D4A5A992C9F8E5A0012346F /* AIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIService.swift; sourceTree = "<group>"; };
+		1D4A5A9B2C9F8E5A00123470 /* TextToSpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToSpeechService.swift; sourceTree = "<group>"; };
+		1D4A5A9D2C9F8E5A00123471 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		1D4A5A9F2C9F8E5A00123472 /* LiveActivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityService.swift; sourceTree = "<group>"; };
+		1D4A5AA12C9F8E5A00123473 /* IntelligentSchedulingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligentSchedulingService.swift; sourceTree = "<group>"; };
+		1D4A5AA32C9F8E5A00123474 /* ContextAwareOptimizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextAwareOptimizationService.swift; sourceTree = "<group>"; };
+		1D4A5AA52C9F8E5A00123475 /* SmartDeadlineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartDeadlineManager.swift; sourceTree = "<group>"; };
+		1D4A5AA72C9F8E5A00123476 /* PredictiveTimeEstimationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictiveTimeEstimationService.swift; sourceTree = "<group>"; };
+		1D4A5AA92C9F8E5A00123477 /* DataExportImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExportImportService.swift; sourceTree = "<group>"; };
+		1D4A5AAB2C9F8E5A00123478 /* TaskActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskActivityWidget.swift; sourceTree = "<group>"; };
+		1D4A5AAD2C9F8E5A00123479 /* TaskActivityWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskActivityWidgetBundle.swift; sourceTree = "<group>"; };
+		1D4A5AAF2C9F8E5A00123480 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,15 +127,15 @@
 			isa = PBXGroup;
 			children = (
 				1D4A5A3A2C9F8F1200123456 /* App */,
-				1D4A5A3B2C9F8F1800123456 /* Models */,
-				1D4A5A3C2C9F8F1E00123456 /* Views */,
-				1D4A5A3D2C9F8F2400123456 /* ViewModels */,
-				1D4A5A3E2C9F8F2A00123456 /* Services */,
-				1D4A5A3F2C9F8F3000123456 /* Utilities */,
-				1D4A5A432C9F8E6100123456 /* TaskActivityWidget */,
+				1D4A5AB02C9F8E5A0012347A /* Models */,
+				1D4A5AB12C9F8E5A0012347B /* Views */,
+				1D4A5AB22C9F8E5A0012347C /* ViewModels */,
+				1D4A5AB32C9F8E5A0012347D /* Services */,
+				1D4A5AB42C9F8E5A0012347E /* TaskActivityWidget */,
+				1D4A5AB52C9F8E5A0012347F /* Utilities */,
 				1D4A5A2E2C9F8E5C00123456 /* Assets.xcassets */,
 				1D4A5A352C9F8E5C00123456 /* Info.plist */,
-				1D4A5A322C9F8E5C00123456 /* DataModel.xcdatamodeld */,
+				1D4A5A332C9F8E5C00123456 /* DataModel.xcdatamodeld */,
 				1D4A5A302C9F8E5C00123456 /* Preview Content */,
 			);
 			path = TimeManagerAI;
@@ -106,62 +154,118 @@
 			children = (
 				1D4A5A2A2C9F8E5A00123456 /* TimeManagerAIApp.swift */,
 				1D4A5A2C2C9F8E5A00123456 /* ContentView.swift */,
+				1D4A5AAF2C9F8E5A00123480 /* PersistenceController.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
 		};
-		1D4A5A3B2C9F8F1800123456 /* Models */ = {
+		1D4A5AB02C9F8E5A0012347A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				1D4A5ABB2C9F8E5A00123499 /* CoreDataEntities.swift */,
+				1D4A5A6F2C9F8E5A0012345A /* TaskModel.swift */,
+				1D4A5A712C9F8E5A0012345B /* EventModel.swift */,
+				1D4A5A732C9F8E5A0012345C /* SettingsModel.swift */,
+				1D4A5ABD2C9F8E5A0012349A /* GoalModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		1D4A5A3C2C9F8F1E00123456 /* Views */ = {
+		1D4A5AB12C9F8E5A0012347B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1D4A5A4B2C9F8E8000123456 /* AIInsightsView.swift */,
-				1D4A5A4D2C9F8E9000123456 /* OnboardingView.swift */,
-				1D4A5A4F2C9F8E9000123456 /* TutorialView.swift */,
-				1D4A5A532C9F8EA000123456 /* DataManagementView.swift */,
-				1D4A5A552C9F8EB000123456 /* AnimatedComponents.swift */,
+				1D4A5A752C9F8E5A0012345D /* VoiceAgentView.swift */,
+				1D4A5A772C9F8E5A0012345E /* DocEditorView.swift */,
+				1D4A5A792C9F8E5A0012345F /* RichTextEditor.swift */,
+				1D4A5A7B2C9F8E5A00123460 /* AIInsightsView.swift */,
+				1D4A5A7D2C9F8E5A00123461 /* SettingsView.swift */,
+				1D4A5AB62C9F8E5A00123481 /* CalendarViews */,
+				1D4A5AB72C9F8E5A00123482 /* Onboarding */,
+				1D4A5AB82C9F8E5A00123483 /* Settings */,
+				1D4A5AB92C9F8E5A00123484 /* Components */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		1D4A5A3D2C9F8F2400123456 /* ViewModels */ = {
+		1D4A5AB62C9F8E5A00123481 /* CalendarViews */ = {
 			isa = PBXGroup;
 			children = (
+				1D4A5A7F2C9F8E5A00123462 /* CalendarContainerView.swift */,
+				1D4A5A812C9F8E5A00123463 /* DailyCalendarView.swift */,
+				1D4A5A832C9F8E5A00123464 /* WeeklyCalendarView.swift */,
+				1D4A5A852C9F8E5A00123465 /* MonthlyCalendarView.swift */,
+				1D4A5A872C9F8E5A00123466 /* YearlyCalendarView.swift */,
+			);
+			path = CalendarViews;
+			sourceTree = "<group>";
+		};
+		1D4A5AB72C9F8E5A00123482 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				1D4A5A892C9F8E5A00123467 /* OnboardingView.swift */,
+				1D4A5A8B2C9F8E5A00123468 /* TutorialView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		1D4A5AB82C9F8E5A00123483 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				1D4A5A8D2C9F8E5A00123469 /* DataManagementView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		1D4A5AB92C9F8E5A00123484 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				1D4A5A8F2C9F8E5A0012346A /* AnimatedComponents.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		1D4A5AB22C9F8E5A0012347C /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				1D4A5A912C9F8E5A0012346B /* VoiceAgentViewModel.swift */,
+				1D4A5A932C9F8E5A0012346C /* CalendarViewModel.swift */,
+				1D4A5A952C9F8E5A0012346D /* DocumentViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		1D4A5A3E2C9F8F2A00123456 /* Services */ = {
+		1D4A5AB32C9F8E5A0012347D /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				1D4A5A432C9F8E7000123456 /* IntelligentSchedulingService.swift */,
-				1D4A5A452C9F8E7000123456 /* ContextAwareOptimizationService.swift */,
-				1D4A5A472C9F8E7000123456 /* SmartDeadlineManager.swift */,
-				1D4A5A492C9F8E7000123456 /* PredictiveTimeEstimationService.swift */,
-				1D4A5A512C9F8EA000123456 /* DataExportImportService.swift */,
+				1D4A5A972C9F8E5A0012346E /* VoiceService.swift */,
+				1D4A5A992C9F8E5A0012346F /* AIService.swift */,
+				1D4A5A9B2C9F8E5A00123470 /* TextToSpeechService.swift */,
+				1D4A5A9D2C9F8E5A00123471 /* NotificationService.swift */,
+				1D4A5A9F2C9F8E5A00123472 /* LiveActivityService.swift */,
+				1D4A5AA12C9F8E5A00123473 /* IntelligentSchedulingService.swift */,
+				1D4A5AA32C9F8E5A00123474 /* ContextAwareOptimizationService.swift */,
+				1D4A5AA52C9F8E5A00123475 /* SmartDeadlineManager.swift */,
+				1D4A5AA72C9F8E5A00123476 /* PredictiveTimeEstimationService.swift */,
+				1D4A5AA92C9F8E5A00123477 /* DataExportImportService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
 		};
-		1D4A5A3F2C9F8F3000123456 /* Utilities */ = {
+		1D4A5AB42C9F8E5A0012347E /* TaskActivityWidget */ = {
 			isa = PBXGroup;
 			children = (
-			);
-			path = Utilities;
-			sourceTree = "<group>";
-		};
-		1D4A5A432C9F8E6100123456 /* TaskActivityWidget */ = {
-			isa = PBXGroup;
-			children = (
-				1D4A5A3F2C9F8E6000123456 /* TaskActivityWidget.swift */,
-				1D4A5A412C9F8E6000123456 /* TaskActivityWidgetBundle.swift */,
+				1D4A5AAB2C9F8E5A00123478 /* TaskActivityWidget.swift */,
+				1D4A5AAD2C9F8E5A00123479 /* TaskActivityWidgetBundle.swift */,
 			);
 			path = TaskActivityWidget;
+			sourceTree = "<group>";
+		};
+		1D4A5AB52C9F8E5A0012347F /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				1D4A5A612C9F8E5A00123459 /* SampleDataManager.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -191,11 +295,11 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1500;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					1D4A5A262C9F8E5A00123456 = {
-						CreatedOnToolsVersion = 15.0;
+						CreatedOnToolsVersion = 15.4;
 					};
 				};
 			};
@@ -237,25 +341,80 @@
 				1D4A5A2D2C9F8E5A00123456 /* ContentView.swift in Sources */,
 				1D4A5A342C9F8E5C00123456 /* DataModel.xcdatamodeld in Sources */,
 				1D4A5A2B2C9F8E5A00123456 /* TimeManagerAIApp.swift in Sources */,
-				1D4A5A402C9F8E6000123456 /* TaskActivityWidget.swift in Sources */,
-				1D4A5A422C9F8E6000123456 /* TaskActivityWidgetBundle.swift in Sources */,
-				1D4A5A442C9F8E7000123456 /* IntelligentSchedulingService.swift in Sources */,
-				1D4A5A462C9F8E7000123456 /* ContextAwareOptimizationService.swift in Sources */,
-				1D4A5A482C9F8E7000123456 /* SmartDeadlineManager.swift in Sources */,
-				1D4A5A4A2C9F8E7000123456 /* PredictiveTimeEstimationService.swift in Sources */,
-				1D4A5A4C2C9F8E8000123456 /* AIInsightsView.swift in Sources */,
-				1D4A5A4E2C9F8E9000123456 /* OnboardingView.swift in Sources */,
-				1D4A5A502C9F8E9000123456 /* TutorialView.swift in Sources */,
-				1D4A5A522C9F8EA000123456 /* DataExportImportService.swift in Sources */,
-				1D4A5A542C9F8EA000123456 /* DataManagementView.swift in Sources */,
-				1D4A5A562C9F8EB000123456 /* AnimatedComponents.swift in Sources */,
+				1D4A5A602C9F8E5A00123457 /* TutorialTriggerView.swift in Sources */,
+				1D4A5A622C9F8E5A00123459 /* SampleDataManager.swift in Sources */,
+				1D4A5A702C9F8E5A0012345A /* TaskModel.swift in Sources */,
+				1D4A5A722C9F8E5A0012345B /* EventModel.swift in Sources */,
+				1D4A5A742C9F8E5A0012345C /* SettingsModel.swift in Sources */,
+				1D4A5ABC2C9F8E5A00123499 /* CoreDataEntities.swift in Sources */,
+				1D4A5ABE2C9F8E5A0012349A /* GoalModel.swift in Sources */,
+				1D4A5A762C9F8E5A0012345D /* VoiceAgentView.swift in Sources */,
+				1D4A5A782C9F8E5A0012345E /* DocEditorView.swift in Sources */,
+				1D4A5A7A2C9F8E5A0012345F /* RichTextEditor.swift in Sources */,
+				1D4A5A7C2C9F8E5A00123460 /* AIInsightsView.swift in Sources */,
+				1D4A5A7E2C9F8E5A00123461 /* SettingsView.swift in Sources */,
+				1D4A5A802C9F8E5A00123462 /* CalendarContainerView.swift in Sources */,
+				1D4A5A822C9F8E5A00123463 /* DailyCalendarView.swift in Sources */,
+				1D4A5A842C9F8E5A00123464 /* WeeklyCalendarView.swift in Sources */,
+				1D4A5A862C9F8E5A00123465 /* MonthlyCalendarView.swift in Sources */,
+				1D4A5A882C9F8E5A00123466 /* YearlyCalendarView.swift in Sources */,
+				1D4A5A8A2C9F8E5A00123467 /* OnboardingView.swift in Sources */,
+				1D4A5A8C2C9F8E5A00123468 /* TutorialView.swift in Sources */,
+				1D4A5A8E2C9F8E5A00123469 /* DataManagementView.swift in Sources */,
+				1D4A5A902C9F8E5A0012346A /* AnimatedComponents.swift in Sources */,
+				1D4A5A922C9F8E5A0012346B /* VoiceAgentViewModel.swift in Sources */,
+				1D4A5A942C9F8E5A0012346C /* CalendarViewModel.swift in Sources */,
+				1D4A5A962C9F8E5A0012346D /* DocumentViewModel.swift in Sources */,
+				1D4A5A982C9F8E5A0012346E /* VoiceService.swift in Sources */,
+				1D4A5A9A2C9F8E5A0012346F /* AIService.swift in Sources */,
+				1D4A5A9C2C9F8E5A00123470 /* TextToSpeechService.swift in Sources */,
+				1D4A5A9E2C9F8E5A00123471 /* NotificationService.swift in Sources */,
+				1D4A5AA02C9F8E5A00123472 /* LiveActivityService.swift in Sources */,
+				1D4A5AA22C9F8E5A00123473 /* IntelligentSchedulingService.swift in Sources */,
+				1D4A5AA42C9F8E5A00123474 /* ContextAwareOptimizationService.swift in Sources */,
+				1D4A5AA62C9F8E5A00123475 /* SmartDeadlineManager.swift in Sources */,
+				1D4A5AA82C9F8E5A00123476 /* PredictiveTimeEstimationService.swift in Sources */,
+				1D4A5AAA2C9F8E5A00123477 /* DataExportImportService.swift in Sources */,
+				1D4A5AAC2C9F8E5A00123478 /* TaskActivityWidget.swift in Sources */,
+				1D4A5AAE2C9F8E5A00123479 /* TaskActivityWidgetBundle.swift in Sources */,
+				1D4A5AB02C9F8E5A00123480 /* PersistenceController.swift in Sources */,
+				1D4A5A762C9F8E5A0012345D /* VoiceAgentView.swift in Sources */,
+				1D4A5A782C9F8E5A0012345E /* DocEditorView.swift in Sources */,
+				1D4A5A7A2C9F8E5A0012345F /* RichTextEditor.swift in Sources */,
+				1D4A5A7C2C9F8E5A00123460 /* AIInsightsView.swift in Sources */,
+				1D4A5A7E2C9F8E5A00123461 /* SettingsView.swift in Sources */,
+				1D4A5A802C9F8E5A00123462 /* CalendarContainerView.swift in Sources */,
+				1D4A5A822C9F8E5A00123463 /* DailyCalendarView.swift in Sources */,
+				1D4A5A842C9F8E5A00123464 /* WeeklyCalendarView.swift in Sources */,
+				1D4A5A862C9F8E5A00123465 /* MonthlyCalendarView.swift in Sources */,
+				1D4A5A882C9F8E5A00123466 /* YearlyCalendarView.swift in Sources */,
+				1D4A5A8A2C9F8E5A00123467 /* OnboardingView.swift in Sources */,
+				1D4A5A8C2C9F8E5A00123468 /* TutorialView.swift in Sources */,
+				1D4A5A8E2C9F8E5A00123469 /* DataManagementView.swift in Sources */,
+				1D4A5A902C9F8E5A0012346A /* AnimatedComponents.swift in Sources */,
+				1D4A5A922C9F8E5A0012346B /* VoiceAgentViewModel.swift in Sources */,
+				1D4A5A942C9F8E5A0012346C /* CalendarViewModel.swift in Sources */,
+				1D4A5A962C9F8E5A0012346D /* DocumentViewModel.swift in Sources */,
+				1D4A5A982C9F8E5A0012346E /* VoiceService.swift in Sources */,
+				1D4A5A9A2C9F8E5A0012346F /* AIService.swift in Sources */,
+				1D4A5A9C2C9F8E5A00123470 /* TextToSpeechService.swift in Sources */,
+				1D4A5A9E2C9F8E5A00123471 /* NotificationService.swift in Sources */,
+				1D4A5AA02C9F8E5A00123472 /* LiveActivityService.swift in Sources */,
+				1D4A5AA22C9F8E5A00123473 /* IntelligentSchedulingService.swift in Sources */,
+				1D4A5AA42C9F8E5A00123474 /* ContextAwareOptimizationService.swift in Sources */,
+				1D4A5AA62C9F8E5A00123475 /* SmartDeadlineManager.swift in Sources */,
+				1D4A5AA82C9F8E5A00123476 /* PredictiveTimeEstimationService.swift in Sources */,
+				1D4A5AAA2C9F8E5A00123477 /* DataExportImportService.swift in Sources */,
+				1D4A5AAC2C9F8E5A00123478 /* TaskActivityWidget.swift in Sources */,
+				1D4A5AAE2C9F8E5A00123479 /* TaskActivityWidgetBundle.swift in Sources */,
+				1D4A5AB02C9F8E5A00123480 /* PersistenceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1D4A5A372C9F8E5C00123456 /* Debug */ = {
+		1D4A5A202C9F8E5A00123456 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -318,7 +477,7 @@
 			};
 			name = Debug;
 		};
-		1D4A5A382C9F8E5C00123456 /* Release */ = {
+		1D4A5A212C9F8E5A00123456 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -374,7 +533,7 @@
 			};
 			name = Release;
 		};
-		1D4A5A392C9F8E5C00123456 /* Debug */ = {
+		1D4A5A382C9F8E5C00123456 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -385,11 +544,9 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimeManagerAI/Info.plist;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Time Manager AI needs microphone access to listen to your voice commands for scheduling and task management.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -397,18 +554,15 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.timemanagerai.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timemanager.ai;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		1D4A5A3A2C9F8E5C00123456 /* Release */ = {
+		1D4A5A392C9F8E5C00123456 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -419,11 +573,9 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimeManagerAI/Info.plist;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Time Manager AI needs microphone access to listen to your voice commands for scheduling and task management.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -431,14 +583,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.timemanagerai.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timemanager.ai;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -448,8 +597,8 @@
 		1D4A5A222C9F8E5A00123456 /* Build configuration list for PBXProject "TimeManagerAI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1D4A5A372C9F8E5C00123456 /* Debug */,
-				1D4A5A382C9F8E5C00123456 /* Release */,
+				1D4A5A202C9F8E5A00123456 /* Debug */,
+				1D4A5A212C9F8E5A00123456 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -457,8 +606,8 @@
 		1D4A5A362C9F8E5C00123456 /* Build configuration list for PBXNativeTarget "TimeManagerAI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1D4A5A392C9F8E5C00123456 /* Debug */,
-				1D4A5A3A2C9F8E5C00123456 /* Release */,
+				1D4A5A382C9F8E5C00123456 /* Debug */,
+				1D4A5A392C9F8E5C00123456 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -466,7 +615,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		1D4A5A322C9F8E5C00123456 /* DataModel.xcdatamodeld */ = {
+		1D4A5A332C9F8E5C00123456 /* DataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				1D4A5A332C9F8E5C00123456 /* DataModel.xcdatamodel */,

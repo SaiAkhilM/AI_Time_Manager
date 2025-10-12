@@ -2,7 +2,8 @@ import Foundation
 import CoreData
 import SwiftUI
 
-extension Task {
+// Task extensions using TaskEntity to avoid Swift.Task conflicts
+extension TaskEntity {
     enum Priority: String, CaseIterable {
         case high = "red"
         case medium = "orange"
@@ -41,8 +42,8 @@ extension Task {
         startTime: Date? = nil,
         endTime: Date? = nil,
         date: Date? = nil
-    ) -> Task {
-        let task = Task(context: context)
+    ) -> TaskEntity {
+        let task = TaskEntity(context: context)
         task.id = UUID()
         task.title = title
         task.taskDescription = description

@@ -3,11 +3,6 @@ import CoreData
 import Combine
 import AVFoundation
 
-extension Notification.Name {
-    static let taskCreated = Notification.Name("taskCreated")
-    static let taskUpdated = Notification.Name("taskUpdated")
-}
-
 @MainActor
 class VoiceAgentViewModel: ObservableObject {
     @Published var isRecording = false
@@ -71,7 +66,7 @@ class VoiceAgentViewModel: ObservableObject {
     private func setupNotificationObservers() {
         NotificationCenter.default.publisher(for: .taskCreated)
             .sink { [weak self] notification in
-                if let task = notification.object as? Task {
+                if let task = notification.object as? TaskEntity {
                     self?.notificationService.scheduleAllNotificationsForTask(task)
 
                     if #available(iOS 16.1, *),
@@ -84,7 +79,7 @@ class VoiceAgentViewModel: ObservableObject {
 
         NotificationCenter.default.publisher(for: .taskUpdated)
             .sink { [weak self] notification in
-                if let task = notification.object as? Task {
+                if let task = notification.object as? TaskEntity {
                     self?.notificationService.cancelNotifications(for: task)
                     if !task.isCompleted {
                         self?.notificationService.scheduleAllNotificationsForTask(task)
@@ -95,7 +90,7 @@ class VoiceAgentViewModel: ObservableObject {
                         if task.isCompleted {
                             service.endCurrentActivity()
                         } else {
-                            service.updateTaskActivity(task: task, isCompleted: task.isCompleted)
+                            service.updateTaskEntityActivity(task: task, isCompleted: task.isCompleted)
                         }
                     }
                 }

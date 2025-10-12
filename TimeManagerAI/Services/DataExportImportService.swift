@@ -185,12 +185,12 @@ class DataExportImportService: ObservableObject {
     }
 
     private func fetchAllTasks() throws -> [ExportData.ExportTask] {
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         let tasks = try context.fetch(request)
 
         return tasks.map { task in
             ExportData.ExportTask(
-                id: task.id?.uuidString ?? UUID().uuidString,
+                id: task.id.uuidString,
                 title: task.title ?? "",
                 description: task.taskDescription,
                 priority: task.priority ?? "medium",
@@ -211,7 +211,7 @@ class DataExportImportService: ObservableObject {
 
         return events.map { event in
             ExportData.ExportEvent(
-                id: event.id?.uuidString ?? UUID().uuidString,
+                id: event.id.uuidString,
                 title: event.title ?? "",
                 description: event.eventDescription,
                 startTime: event.startTime ?? Date(),
@@ -229,13 +229,13 @@ class DataExportImportService: ObservableObject {
 
         return goals.map { goal in
             ExportData.ExportGoal(
-                id: goal.id?.uuidString ?? UUID().uuidString,
-                title: goal.title ?? "",
+                id: goal.id.uuidString,
+                title: goal.title,
                 description: goal.goalDescription,
-                targetDate: goal.targetDate,
-                isCompleted: goal.isCompleted,
-                createdAt: goal.createdAt ?? Date(),
-                updatedAt: goal.updatedAt ?? Date()
+                targetDate: nil, // Not available in Goal entity
+                isCompleted: !goal.isActive, // Using inverse of isActive
+                createdAt: goal.createdAt,
+                updatedAt: goal.updatedAt
             )
         }
     }
@@ -244,18 +244,18 @@ class DataExportImportService: ObservableObject {
         let settings = Settings.getOrCreate(in: context)
 
         return ExportData.ExportSettings(
-            userName: settings.userName,
-            workStartTime: settings.workStartTime,
-            workEndTime: settings.workEndTime,
+            userName: nil, // Not available in Settings entity
+            workStartTime: nil, // Not available in Settings entity
+            workEndTime: nil, // Not available in Settings entity
             sleepStartTime: settings.sleepStartTime,
             sleepEndTime: settings.sleepEndTime,
-            enableTaskReminders: settings.enableTaskReminders,
-            enableDeadlineWarnings: settings.enableDeadlineWarnings,
-            enableBreakReminders: settings.enableBreakReminders,
+            enableTaskReminders: settings.taskRemindersEnabled,
+            enableDeadlineWarnings: settings.deadlineWarningsEnabled,
+            enableBreakReminders: settings.sleepWarningsEnabled,
             bedtimeWarningMinutes: Int(settings.bedtimeWarningMinutes),
-            focusSessionDuration: Int(settings.focusSessionDuration),
-            shortBreakDuration: Int(settings.shortBreakDuration),
-            longBreakDuration: Int(settings.longBreakDuration)
+            focusSessionDuration: 25, // Default value - not in Settings entity
+            shortBreakDuration: 5, // Default value - not in Settings entity
+            longBreakDuration: 15 // Default value - not in Settings entity
         )
     }
 
@@ -453,8 +453,8 @@ class DataExportImportService: ObservableObject {
                             continue
                         }
 
-                        let task = Task(context: self.context)
-                        task.id = UUID(uuidString: taskData.id)
+                        let task = TaskEntity(context: self.context)
+                        task.id = UUID(uuidString: taskData.id) ?? UUID()
                         task.title = taskData.title
                         task.taskDescription = taskData.description
                         task.priority = taskData.priority
@@ -481,7 +481,7 @@ class DataExportImportService: ObservableObject {
                         }
 
                         let event = Event(context: self.context)
-                        event.id = UUID(uuidString: eventData.id)
+                        event.id = UUID(uuidString: eventData.id) ?? UUID()
                         event.title = eventData.title
                         event.eventDescription = eventData.description
                         event.startTime = eventData.startTime
@@ -505,11 +505,11 @@ class DataExportImportService: ObservableObject {
                         }
 
                         let goal = Goal(context: self.context)
-                        goal.id = UUID(uuidString: goalData.id)
+                        goal.id = UUID(uuidString: goalData.id) ?? UUID()
                         goal.title = goalData.title
                         goal.goalDescription = goalData.description
-                        goal.targetDate = goalData.targetDate
-                        goal.isCompleted = goalData.isCompleted
+                        // goal.targetDate not available in Goal entity
+                        goal.isActive = !goalData.isCompleted // Using inverse of isCompleted
                         goal.createdAt = goalData.createdAt
                         goal.updatedAt = goalData.updatedAt
 
@@ -533,7 +533,7 @@ class DataExportImportService: ObservableObject {
 
     private func taskExists(id: String) -> Bool {
         guard let uuid = UUID(uuidString: id) else { return false }
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id == %@", uuid as CVarArg)
         request.fetchLimit = 1
 

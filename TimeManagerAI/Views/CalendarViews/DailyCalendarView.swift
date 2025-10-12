@@ -37,12 +37,22 @@ struct DailyCalendarView: View {
                         }
                     }
                     .onAppear {
-                        scrollToCurrentTime(proxy: proxy)
+                        let currentHour = Calendar.current.component(.hour, from: Date())
+                        if currentHour >= 6 && currentHour <= 23 && Calendar.current.isDateInToday(calendarViewModel.selectedDate) {
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                proxy.scrollTo(currentHour, anchor: .center)
+                            }
+                        }
                     }
                     .onChange(of: calendarViewModel.selectedDate) { _ in
                         if Calendar.current.isDateInToday(calendarViewModel.selectedDate) {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                scrollToCurrentTime(proxy: proxy)
+                                let currentHour = Calendar.current.component(.hour, from: Date())
+                                if currentHour >= 6 && currentHour <= 23 {
+                                    withAnimation(.easeInOut(duration: 0.5)) {
+                                        proxy.scrollTo(currentHour, anchor: .center)
+                                    }
+                                }
                             }
                         }
                     }
@@ -61,7 +71,7 @@ struct DailyCalendarView: View {
         }
     }
 
-    private func getTasksForHour(_ hour: Int) -> [Task] {
+    private func getTasksForHour(_ hour: Int) -> [TaskEntity] {
         return calendarViewModel.tasks.filter { task in
             guard let startTime = task.startTime else { return false }
             let taskHour = Calendar.current.component(.hour, from: startTime)
@@ -71,20 +81,12 @@ struct DailyCalendarView: View {
 
     private func getEventsForHour(_ hour: Int) -> [Event] {
         return calendarViewModel.events.filter { event in
-            guard let startTime = event.startTime else { return false }
+            let startTime = event.startTime
             let eventHour = Calendar.current.component(.hour, from: startTime)
             return eventHour == hour
         }
     }
 
-    private func scrollToCurrentTime(proxy: ScrollViewReader) {
-        let currentHour = Calendar.current.component(.hour, from: Date())
-        if currentHour >= 6 && currentHour <= 23 && Calendar.current.isDateInToday(calendarViewModel.selectedDate) {
-            withAnimation(.easeInOut(duration: 0.5)) {
-                proxy.scrollTo(currentHour, anchor: .center)
-            }
-        }
-    }
 }
 
 struct DateHeader: View {
@@ -126,7 +128,7 @@ struct DateHeader: View {
 
 struct TimeSlotRow: View {
     let hour: Int
-    let tasks: [Task]
+    let tasks: [TaskEntity]
     let events: [Event]
     let width: CGFloat
 
@@ -177,12 +179,12 @@ struct TimeSlotRow: View {
 }
 
 struct RealTaskBlock: View {
-    let task: Task
+    let task: TaskEntity
 
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text(task.title ?? "Untitled Task")
+                Text(task.title.isEmpty ? "Untitled Task" : task.title)
                     .font(.caption)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
@@ -222,13 +224,15 @@ struct RealEventBlock: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text(event.title ?? "Untitled Event")
+                Text(event.title.isEmpty ? "Untitled Event" : event.title)
                     .font(.caption)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
                     .lineLimit(1)
 
-                if let startTime = event.startTime, let endTime = event.endTime {
+                let startTime = event.startTime
+                let endTime = event.endTime
+                if true {
                     Text("\(startTime, format: .dateTime.hour().minute()) - \(endTime, format: .dateTime.hour().minute())")
                         .font(.caption2)
                         .foregroundColor(.white.opacity(0.8))

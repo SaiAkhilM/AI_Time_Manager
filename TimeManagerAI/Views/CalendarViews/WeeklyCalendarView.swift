@@ -104,9 +104,9 @@ struct DayColumn: View {
     let date: Date
     let calendarViewModel: CalendarViewModel
     @State private var showingTaskSheet = false
-    @State private var selectedTask: Task?
+    @State private var selectedTask: TaskEntity?
 
-    private var dayTasks: [Task] {
+    private var dayTasks: [TaskEntity] {
         return calendarViewModel.getTasksForDate(date)
     }
 
@@ -152,7 +152,7 @@ struct DayColumn: View {
 }
 
 struct WeekTaskBlock: View {
-    let task: Task
+    let task: TaskEntity
 
     var body: some View {
         HStack {
@@ -197,7 +197,8 @@ struct WeekEventBlockReal: View {
                     .foregroundColor(.white)
                     .lineLimit(1)
 
-                if let startTime = event.startTime {
+                let startTime = event.startTime
+                if true {
                     Text(startTime.formatted(.dateTime.hour().minute()))
                         .font(.caption2)
                         .foregroundColor(.white.opacity(0.8))
@@ -214,7 +215,7 @@ struct WeekEventBlockReal: View {
 }
 
 struct TaskDetailSheet: View {
-    let task: Task
+    let task: TaskEntity
     let calendarViewModel: CalendarViewModel
     @Environment(\.dismiss) private var dismiss
 

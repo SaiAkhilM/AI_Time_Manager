@@ -141,15 +141,14 @@ class DocumentViewModel: ObservableObject {
                 let bullet = NSAttributedString(string: "• ", attributes: taskStyle)
                 document.append(bullet)
 
-                if let startTime = event.startTime {
-                    let dateText = NSAttributedString(
-                        string: "\(startTime.formatted(.dateTime.month().day())) - ",
-                        attributes: timeStyle
-                    )
-                    document.append(dateText)
-                }
+                let startTime = event.startTime
+                let dateText = NSAttributedString(
+                    string: "\(startTime.formatted(.dateTime.month().day())) - ",
+                    attributes: timeStyle
+                )
+                document.append(dateText)
 
-                let titleText = NSAttributedString(string: "\(event.title ?? "Untitled Event")\n", attributes: taskStyle)
+                let titleText = NSAttributedString(string: "\(event.title)\n", attributes: taskStyle)
                 document.append(titleText)
             }
 
@@ -189,7 +188,7 @@ class DocumentViewModel: ObservableObject {
                 var titleAttributes = taskStyle
                 titleAttributes[.foregroundColor] = task.priorityEnum.uiColor
 
-                let titleText = NSAttributedString(string: task.title ?? "Untitled Task", attributes: titleAttributes)
+                let titleText = NSAttributedString(string: task.title, attributes: titleAttributes)
                 document.append(titleText)
 
                 if task.isCompleted {
@@ -214,13 +213,13 @@ class DocumentViewModel: ObservableObject {
         }
     }
 
-    private func getTasksForDate(_ date: Date) -> [Task] {
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+    private func getTasksForDate(_ date: Date) -> [TaskEntity] {
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         let startOfDay = Calendar.current.startOfDay(for: date)
         let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay) ?? Date()
 
         request.predicate = NSPredicate(format: "date >= %@ AND date < %@", startOfDay as NSDate, endOfDay as NSDate)
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Task.startTime, ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \TaskEntity.startTime, ascending: true)]
 
         do {
             return try context.fetch(request)
@@ -275,10 +274,10 @@ class DocumentViewModel: ObservableObject {
         }
     }
 
-    private func getUnscheduledTasks() -> [Task] {
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+    private func getUnscheduledTasks() -> [TaskEntity] {
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "date == nil AND isCompleted == NO")
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Task.priorityEnum, ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \TaskEntity.priorityEnum, ascending: false)]
 
         do {
             return try context.fetch(request)
@@ -327,7 +326,7 @@ private struct ItemWrapper {
     let isCompleted: Bool
     let linkedURL: String?
 
-    static func task(_ task: Task) -> ItemWrapper {
+    static func task(_ task: TaskEntity) -> ItemWrapper {
         return ItemWrapper(
             title: task.title ?? "Untitled Task",
             description: task.taskDescription,
@@ -352,7 +351,7 @@ private struct ItemWrapper {
     }
 }
 
-extension Task.Priority {
+extension TaskEntity.Priority {
     var uiColor: UIColor {
         switch self {
         case .high: return UIColor.systemRed

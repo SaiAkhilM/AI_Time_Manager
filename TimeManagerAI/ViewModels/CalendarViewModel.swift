@@ -4,7 +4,7 @@ import Combine
 
 @MainActor
 class CalendarViewModel: ObservableObject {
-    @Published var tasks: [Task] = []
+    @Published var tasks: [TaskEntity] = []
     @Published var events: [Event] = []
     @Published var selectedDate = Date()
     @Published var errorMessage: String?
@@ -49,7 +49,7 @@ class CalendarViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self?.refreshData()
 
-                    if let task = notification.object as? Task {
+                    if let task = notification.object as? TaskEntity {
                         self?.notificationService.scheduleAllNotificationsForTask(task)
 
                         if #available(iOS 16.1, *),
@@ -66,7 +66,7 @@ class CalendarViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self?.refreshData()
 
-                    if let task = notification.object as? Task {
+                    if let task = notification.object as? TaskEntity {
                         self?.notificationService.cancelNotifications(for: task)
                         if !task.isCompleted {
                             self?.notificationService.scheduleAllNotificationsForTask(task)
@@ -89,13 +89,13 @@ class CalendarViewModel: ObservableObject {
     }
 
     private func loadTasks() {
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
 
         let startOfDay = Calendar.current.startOfDay(for: selectedDate)
         let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay) ?? Date()
 
         request.predicate = NSPredicate(format: "date >= %@ AND date < %@", startOfDay as NSDate, endOfDay as NSDate)
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Task.startTime, ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \TaskEntity.startTime, ascending: true)]
 
         do {
             tasks = try context.fetch(request)
@@ -124,12 +124,12 @@ class CalendarViewModel: ObservableObject {
         }
     }
 
-    func loadWeekData(for date: Date) -> [Date: [Task]] {
+    func loadWeekData(for date: Date) -> [Date: [TaskEntity]] {
         guard let weekStart = Calendar.current.dateInterval(of: .weekOfYear, for: date)?.start else {
             return [:]
         }
 
-        var weekData: [Date: [Task]] = [:]
+        var weekData: [Date: [TaskEntity]] = [:]
 
         for i in 0..<7 {
             if let day = Calendar.current.date(byAdding: .day, value: i, to: weekStart) {
@@ -141,14 +141,14 @@ class CalendarViewModel: ObservableObject {
         return weekData
     }
 
-    func getTasksForDate(_ date: Date) -> [Task] {
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+    func getTasksForDate(_ date: Date) -> [TaskEntity] {
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
 
         let startOfDay = Calendar.current.startOfDay(for: date)
         let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay) ?? Date()
 
         request.predicate = NSPredicate(format: "date >= %@ AND date < %@", startOfDay as NSDate, endOfDay as NSDate)
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Task.startTime, ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \TaskEntity.startTime, ascending: true)]
 
         do {
             return try context.fetch(request)
@@ -158,8 +158,8 @@ class CalendarViewModel: ObservableObject {
         }
     }
 
-    func createTask(title: String, description: String? = nil, priority: Task.Priority, date: Date, startTime: Date? = nil, endTime: Date? = nil) {
-        let task = Task.create(
+    func createTask(title: String, description: String? = nil, priority: TaskEntity.Priority, date: Date, startTime: Date? = nil, endTime: Date? = nil) {
+        let task = TaskEntity.create(
             in: context,
             title: title,
             description: description,
@@ -187,7 +187,7 @@ class CalendarViewModel: ObservableObject {
         loadDataForSelectedDate()
     }
 
-    func updateTask(_ task: Task, title: String? = nil, priority: Task.Priority? = nil, startTime: Date? = nil, endTime: Date? = nil) {
+    func updateTask(_ task: TaskEntity, title: String? = nil, priority: TaskEntity.Priority? = nil, startTime: Date? = nil, endTime: Date? = nil) {
         if let title = title {
             task.title = title
         }
@@ -206,23 +206,23 @@ class CalendarViewModel: ObservableObject {
         loadDataForSelectedDate()
     }
 
-    func deleteTask(_ task: Task) {
+    func deleteTask(_ task: TaskEntity) {
         context.delete(task)
         saveContext()
         loadDataForSelectedDate()
     }
 
-    func completeTask(_ task: Task) {
+    func completeTask(_ task: TaskEntity) {
         task.isCompleted = true
         task.updateTimestamp()
         saveContext()
         loadDataForSelectedDate()
     }
 
-    func getUnscheduledTasks() -> [Task] {
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+    func getUnscheduledTasks() -> [TaskEntity] {
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "date == nil AND isCompleted == NO")
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Task.createdAt, ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \TaskEntity.createdAt, ascending: false)]
 
         do {
             return try context.fetch(request)
@@ -232,7 +232,7 @@ class CalendarViewModel: ObservableObject {
         }
     }
 
-    func scheduleTask(_ task: Task, to date: Date, startTime: Date? = nil, endTime: Date? = nil) {
+    func scheduleTask(_ task: TaskEntity, to date: Date, startTime: Date? = nil, endTime: Date? = nil) {
         task.date = date
         task.startTime = startTime
         task.endTime = endTime
@@ -265,7 +265,7 @@ class CalendarViewModel: ObservableObject {
         loadDataForSelectedDate()
     }
 
-    func getSchedulingSuggestions(for task: Task) async -> [SchedulingSuggestion] {
+    func getSchedulingSuggestions(for task: TaskEntity) async -> [SchedulingSuggestion] {
         return await intelligentSchedulingService.generateSchedulingSuggestions(for: task)
     }
 
@@ -281,7 +281,7 @@ class CalendarViewModel: ObservableObject {
         await smartDeadlineManager.analyzeDeadlines()
     }
 
-    func estimateTaskDuration(title: String, description: String? = nil, priority: Task.Priority = .medium) async -> TimeEstimate {
+    func estimateTaskDuration(title: String, description: String? = nil, priority: TaskEntity.Priority = .medium) async -> TimeEstimate {
         return await predictiveTimeEstimationService.estimateTaskDuration(
             title: title,
             description: description,
@@ -289,7 +289,7 @@ class CalendarViewModel: ObservableObject {
         )
     }
 
-    func createTaskWithAI(title: String, description: String? = nil, priority: Task.Priority, date: Date) async {
+    func createTaskWithAI(title: String, description: String? = nil, priority: TaskEntity.Priority, date: Date) async {
         let estimate = await estimateTaskDuration(title: title, description: description, priority: priority)
         let suggestions = await getSchedulingSuggestionsForNewTask(title: title, estimatedDuration: estimate.estimatedDuration, date: date)
 
@@ -315,7 +315,7 @@ class CalendarViewModel: ObservableObject {
     }
 
     private func getSchedulingSuggestionsForNewTask(title: String, estimatedDuration: TimeInterval, date: Date) async -> [SchedulingSuggestion] {
-        let tempTask = Task(context: context)
+        let tempTask = TaskEntity(context: context)
         tempTask.title = title
         tempTask.id = UUID()
         tempTask.date = date
@@ -325,8 +325,8 @@ class CalendarViewModel: ObservableObject {
         return suggestions
     }
 
-    func updateTaskCompletionTime(_ task: Task, actualDuration: TimeInterval) {
-        guard let title = task.title else { return }
+    func updateTaskCompletionTime(_ task: TaskEntity, actualDuration: TimeInterval) {
+        let title = task.title
 
         let estimatedDuration = task.endTime?.timeIntervalSince(task.startTime ?? Date()) ?? 3600
         predictiveTimeEstimationService.updateEstimationAccuracy(

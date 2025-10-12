@@ -35,7 +35,7 @@ class NotificationService: ObservableObject {
         }
     }
 
-    func scheduleTaskReminder(for task: Task) {
+    func scheduleTaskReminder(for task: TaskEntity) {
         guard notificationPermissionGranted else {
             print("⚠️ Notification permission not granted")
             return
@@ -55,28 +55,29 @@ class NotificationService: ObservableObject {
 
         let content = UNMutableNotificationContent()
         content.title = "⏰ Upcoming Task"
-        content.body = "\(task.title ?? "Task") starts in 15 minutes"
+        content.body = "\(task.title) starts in 15 minutes"
         content.sound = .default
 
-        if let priority = task.priority {
+        let priority = task.priority
+        if !priority.isEmpty {
             switch priority {
             case "red":
                 content.title = "🔴 HIGH PRIORITY"
-                content.body = "\(task.title ?? "Task") starts in 15 minutes"
+                content.body = "\(task.title) starts in 15 minutes"
             case "orange":
                 content.title = "🟠 MEDIUM PRIORITY"
-                content.body = "\(task.title ?? "Task") starts in 15 minutes"
+                content.body = "\(task.title) starts in 15 minutes"
             case "yellow":
                 content.title = "📅 Event Starting Soon"
-                content.body = "\(task.title ?? "Event") starts in 15 minutes"
+                content.body = "\(task.title.isEmpty ? "Event" : task.title) starts in 15 minutes"
             default:
                 break
             }
         }
 
         content.userInfo = [
-            "taskId": task.id?.uuidString ?? "",
-            "taskTitle": task.title ?? "",
+            "taskId": task.id.uuidString,
+            "taskTitle": task.title,
             "type": "taskReminder"
         ]
 
@@ -84,7 +85,7 @@ class NotificationService: ObservableObject {
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
 
         let request = UNNotificationRequest(
-            identifier: "task-reminder-\(task.id?.uuidString ?? UUID().uuidString)",
+            identifier: "task-reminder-\(task.id.uuidString)",
             content: content,
             trigger: trigger
         )
@@ -96,12 +97,12 @@ class NotificationService: ObservableObject {
                     self.errorMessage = "Failed to schedule reminder: \(error.localizedDescription)"
                 }
             } else {
-                print("✅ Scheduled reminder for task: \(task.title ?? "Untitled")")
+                print("✅ Scheduled reminder for task: \(task.title.isEmpty ? "Untitled" : task.title)")
             }
         }
     }
 
-    func scheduleDeadlineWarning(for task: Task, daysBeforeDeadline: Int) {
+    func scheduleDeadlineWarning(for task: TaskEntity, daysBeforeDeadline: Int) {
         guard notificationPermissionGranted else { return }
 
         guard let deadline = task.endTime else { return }
@@ -114,17 +115,17 @@ class NotificationService: ObservableObject {
         content.title = "⚠️ Deadline Approaching"
 
         let daysText = daysBeforeDeadline == 1 ? "tomorrow" : "in \(daysBeforeDeadline) days"
-        content.body = "\(task.title ?? "Task") is due \(daysText)"
+        content.body = "\(task.title.isEmpty ? "Task" : task.title) is due \(daysText)"
         content.sound = .default
 
         if task.priority == "red" {
             content.title = "🚨 URGENT DEADLINE"
-            content.body = "HIGH PRIORITY: \(task.title ?? "Task") is due \(daysText)"
+            content.body = "HIGH PRIORITY: \(task.title.isEmpty ? "Task" : task.title) is due \(daysText)"
         }
 
         content.userInfo = [
-            "taskId": task.id?.uuidString ?? "",
-            "taskTitle": task.title ?? "",
+            "taskId": task.id.uuidString,
+            "taskTitle": task.title,
             "type": "deadlineWarning",
             "daysUntilDeadline": daysBeforeDeadline
         ]
@@ -133,7 +134,7 @@ class NotificationService: ObservableObject {
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
 
         let request = UNNotificationRequest(
-            identifier: "deadline-warning-\(task.id?.uuidString ?? UUID().uuidString)-\(daysBeforeDeadline)d",
+            identifier: "deadline-warning-\(task.id.uuidString)-\(daysBeforeDeadline)d",
             content: content,
             trigger: trigger
         )
@@ -142,7 +143,7 @@ class NotificationService: ObservableObject {
             if let error = error {
                 print("❌ Failed to schedule deadline warning: \(error)")
             } else {
-                print("✅ Scheduled deadline warning for task: \(task.title ?? "Untitled")")
+                print("✅ Scheduled deadline warning for task: \(task.title.isEmpty ? "Untitled" : task.title)")
             }
         }
     }
@@ -182,7 +183,7 @@ class NotificationService: ObservableObject {
         }
     }
 
-    func scheduleIncompleteTaskAlert(for task: Task) {
+    func scheduleIncompleteTaskAlert(for task: TaskEntity) {
         guard notificationPermissionGranted else { return }
 
         guard let endTime = task.endTime else { return }
@@ -194,13 +195,13 @@ class NotificationService: ObservableObject {
         let content = UNMutableNotificationContent()
         content.title = "⏱️ Task Running Over"
 
-        let timeOverText = "You've been on \(task.title ?? "this task") for 30 minutes longer than planned. Still on track?"
+        let timeOverText = "You've been on \(task.title.isEmpty ? "this task" : task.title) for 30 minutes longer than planned. Still on track?"
         content.body = timeOverText
         content.sound = .default
 
         content.userInfo = [
-            "taskId": task.id?.uuidString ?? "",
-            "taskTitle": task.title ?? "",
+            "taskId": task.id.uuidString,
+            "taskTitle": task.title,
             "type": "incompleteTask"
         ]
 
@@ -208,7 +209,7 @@ class NotificationService: ObservableObject {
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
 
         let request = UNNotificationRequest(
-            identifier: "incomplete-task-\(task.id?.uuidString ?? UUID().uuidString)",
+            identifier: "incomplete-task-\(task.id.uuidString)",
             content: content,
             trigger: trigger
         )
@@ -217,13 +218,13 @@ class NotificationService: ObservableObject {
             if let error = error {
                 print("❌ Failed to schedule incomplete task alert: \(error)")
             } else {
-                print("✅ Scheduled incomplete task alert for: \(task.title ?? "Untitled")")
+                print("✅ Scheduled incomplete task alert for: \(task.title.isEmpty ? "Untitled" : task.title)")
             }
         }
     }
 
-    func cancelNotifications(for task: Task) {
-        guard let taskId = task.id?.uuidString else { return }
+    func cancelNotifications(for task: TaskEntity) {
+        let taskId = task.id.uuidString
 
         let identifiers = [
             "task-reminder-\(taskId)",
@@ -234,7 +235,7 @@ class NotificationService: ObservableObject {
         ]
 
         center.removePendingNotificationRequests(withIdentifiers: identifiers)
-        print("✅ Cancelled notifications for task: \(task.title ?? "Untitled")")
+        print("✅ Cancelled notifications for task: \(task.title.isEmpty ? "Untitled" : task.title)")
     }
 
     func cancelAllSleepWarnings() {
@@ -248,7 +249,7 @@ class NotificationService: ObservableObject {
         print("✅ Cancelled all sleep warnings")
     }
 
-    func scheduleAllNotificationsForTask(_ task: Task) {
+    func scheduleAllNotificationsForTask(_ task: TaskEntity) {
         scheduleTaskReminder(for: task)
         scheduleDeadlineWarning(for: task, daysBeforeDeadline: 1)
         scheduleDeadlineWarning(for: task, daysBeforeDeadline: 3)
@@ -260,7 +261,7 @@ class NotificationService: ObservableObject {
         center.removeAllPendingNotificationRequests()
 
         let context = PersistenceController.shared.container.viewContext
-        let taskRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        let taskRequest: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         taskRequest.predicate = NSPredicate(format: "isCompleted == NO AND startTime > %@", Date() as NSDate)
 
         do {
@@ -275,8 +276,8 @@ class NotificationService: ObservableObject {
 
         let settingsRequest: NSFetchRequest<Settings> = Settings.fetchRequest()
         do {
-            if let settings = try context.fetch(settingsRequest).first,
-               let sleepTime = settings.sleepStartTime {
+            if let settings = try context.fetch(settingsRequest).first {
+                let sleepTime = settings.sleepStartTime
                 scheduleSleepTimeWarning(sleepTime: sleepTime, warningMinutes: Int(settings.bedtimeWarningMinutes))
             }
         } catch {

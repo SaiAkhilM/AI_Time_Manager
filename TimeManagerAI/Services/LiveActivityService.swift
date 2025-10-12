@@ -1,6 +1,7 @@
 import Foundation
 import ActivityKit
 import WidgetKit
+import CoreData
 
 @available(iOS 16.1, *)
 class LiveActivityService: ObservableObject {
@@ -11,13 +12,13 @@ class LiveActivityService: ObservableObject {
         observeActivityUpdates()
     }
 
-    func startTaskActivity(for task: Task) {
+    func startTaskActivity(for task: TaskEntity) {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             errorMessage = "Live Activities are not enabled"
             return
         }
 
-        let attributes = TaskAttributes(taskId: task.id?.uuidString ?? "")
+        let attributes = TaskAttributes(taskId: task.id.uuidString)
         let contentState = TaskAttributes.ContentState(
             taskTitle: task.title ?? "Untitled Task",
             startTime: task.startTime ?? Date(),
@@ -40,7 +41,7 @@ class LiveActivityService: ObservableObject {
         }
     }
 
-    func updateTaskActivity(task: Task, isCompleted: Bool) {
+    func updateTaskEntityActivity(task: TaskEntity, isCompleted: Bool) {
         guard let activity = currentActivity else {
             print("⚠️ No active Live Activity to update")
             return
@@ -75,21 +76,21 @@ class LiveActivityService: ObservableObject {
         }
     }
 
-    func startNextTaskIfNeeded() {
+    func startNextTaskEntityIfNeeded() {
         guard currentActivity == nil else {
             print("⚠️ Live Activity already running")
             return
         }
 
-        let currentTask = getCurrentActiveTask()
-        if let task = currentTask {
+        let currentTaskEntity = getCurrentActiveTaskEntity()
+        if let task = currentTaskEntity {
             startTaskActivity(for: task)
         }
     }
 
-    private func getCurrentActiveTask() -> Task? {
+    private func getCurrentActiveTaskEntity() -> TaskEntity? {
         let context = PersistenceController.shared.container.viewContext
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
 
         let now = Date()
         let calendar = Calendar.current
@@ -100,7 +101,7 @@ class LiveActivityService: ObservableObject {
                                        startOfToday as NSDate,
                                        endOfToday as NSDate,
                                        now as NSDate)
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Task.startTime, ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \TaskEntity.startTime, ascending: true)]
         request.fetchLimit = 1
 
         do {

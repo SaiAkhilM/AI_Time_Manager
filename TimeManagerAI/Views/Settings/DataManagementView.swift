@@ -290,18 +290,16 @@ struct DataManagementView: View {
         let settings = Settings.getOrCreate(in: viewContext)
 
         // Reset to default values
-        settings.userName = nil
-        settings.workStartTime = Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: Date())
-        settings.workEndTime = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: Date())
-        settings.sleepStartTime = Calendar.current.date(bySettingHour: 23, minute: 0, second: 0, of: Date())
-        settings.sleepEndTime = Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: Date())
-        settings.enableTaskReminders = true
-        settings.enableDeadlineWarnings = true
-        settings.enableBreakReminders = true
+        // Reset to default values
+        settings.calendarStartHour = 9
+        settings.calendarEndHour = 17
+        settings.sleepStartTime = Calendar.current.date(bySettingHour: 23, minute: 0, second: 0, of: Date()) ?? Date()
+        settings.sleepEndTime = Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: Date()) ?? Date()
+        settings.taskRemindersEnabled = true
+        settings.deadlineWarningsEnabled = true
+        settings.sleepWarningsEnabled = true
         settings.bedtimeWarningMinutes = 30
-        settings.focusSessionDuration = 25
-        settings.shortBreakDuration = 5
-        settings.longBreakDuration = 15
+        settings.timeIncrement = 25
 
         do {
             try viewContext.save()
@@ -336,10 +334,10 @@ struct DataStatsView: View {
     }
 
     private func loadStats() {
-        let taskRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        let taskRequest: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         taskCount = (try? viewContext.count(for: taskRequest)) ?? 0
 
-        let completedTaskRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        let completedTaskRequest: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         completedTaskRequest.predicate = NSPredicate(format: "isCompleted == YES")
         completedTaskCount = (try? viewContext.count(for: completedTaskRequest)) ?? 0
 

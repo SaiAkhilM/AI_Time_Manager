@@ -92,7 +92,7 @@ class PredictiveTimeEstimationService: ObservableObject {
         loadHistoricalPatterns()
     }
 
-    func estimateTaskDuration(title: String, description: String? = nil, priority: Task.Priority = .medium, scheduledTime: Date? = nil) async -> TimeEstimate {
+    func estimateTaskDuration(title: String, description: String? = nil, priority: TaskEntity.Priority = .medium, scheduledTime: Date? = nil) async -> TimeEstimate {
         isAnalyzing = true
         defer { isAnalyzing = false }
 
@@ -140,7 +140,7 @@ class PredictiveTimeEstimationService: ObservableObject {
         return estimate
     }
 
-    func estimateExistingTask(_ task: Task) async -> TimeEstimate {
+    func estimateExistingTask(_ task: TaskEntity) async -> TimeEstimate {
         let title = task.title ?? "Untitled Task"
         let description = task.taskDescription
         let priority = task.priorityEnum
@@ -223,7 +223,7 @@ class PredictiveTimeEstimationService: ObservableObject {
         updateTaskTypeBaselines(from: completedTasks)
     }
 
-    private func calculateHourlyEfficiency(hour: Int, from tasks: [Task]) -> Double {
+    private func calculateHourlyEfficiency(hour: Int, from tasks: [TaskEntity]) -> Double {
         let hourTasks = tasks.filter { task in
             guard let start = task.startTime else { return false }
             return Calendar.current.component(.hour, from: start) == hour
@@ -235,12 +235,12 @@ class PredictiveTimeEstimationService: ObservableObject {
         return completionRate
     }
 
-    private func updateTaskTypeBaselines(from tasks: [Task]) {
+    private func updateTaskTypeBaselines(from tasks: [TaskEntity]) -> Void {
         var typeGroups: [String: [TimeInterval]] = [:]
 
         for task in tasks {
-            guard let title = task.title,
-                  let start = task.startTime,
+            let title = task.title
+            guard let start = task.startTime,
                   let end = task.endTime else { continue }
 
             let taskType = categorizeTask(title)
@@ -376,7 +376,7 @@ class PredictiveTimeEstimationService: ObservableObject {
         )
     }
 
-    private func analyzeContextualFactors(priority: Task.Priority, scheduledTime: Date?, taskTitle: String) -> [EstimationFactor] {
+    private func analyzeContextualFactors(priority: TaskEntity.Priority, scheduledTime: Date?, taskTitle: String) -> [EstimationFactor] {
         var factors: [EstimationFactor] = []
 
         // Priority factor
@@ -384,7 +384,7 @@ class PredictiveTimeEstimationService: ObservableObject {
         switch priority {
         case .high: priorityImpact = 0.1 // High priority tasks might take longer due to perfectionism
         case .medium: priorityImpact = 0.0
-        case .low: priorityImpact = -0.1 // Low priority tasks might be done more quickly
+        case .event: priorityImpact = -0.1 // Event tasks might be done more quickly
         case .none: priorityImpact = 0.0
         }
 
@@ -473,16 +473,16 @@ class PredictiveTimeEstimationService: ObservableObject {
         return totalPlannedTime / availableWorkTime
     }
 
-    private func findSimilarTasks(title: String, taskType: String) -> [Task] {
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+    private func findSimilarTasks(title: String, taskType: String) -> [TaskEntity] {
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "isCompleted == YES AND startTime != nil AND endTime != nil")
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Task.createdAt, ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \TaskEntity.createdAt, ascending: false)]
         request.fetchLimit = 20
 
         do {
             let completedTasks = try context.fetch(request)
             return completedTasks.filter { task in
-                guard let taskTitle = task.title else { return false }
+                let taskTitle = task.title
                 let similarity = calculateTaskSimilarity(title, taskTitle)
                 return similarity > 0.4 || categorizeTask(taskTitle) == taskType
             }
@@ -517,10 +517,10 @@ class PredictiveTimeEstimationService: ObservableObject {
         taskTypeBaselines[taskType] = currentBaseline * 0.9 + actualDuration * 0.1
     }
 
-    private func fetchCompletedTasks() async -> [Task] {
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+    private func fetchCompletedTasks() async -> [TaskEntity] {
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "isCompleted == YES AND startTime != nil AND endTime != nil")
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Task.createdAt, ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \TaskEntity.createdAt, ascending: false)]
 
         do {
             return try context.fetch(request)
@@ -530,8 +530,8 @@ class PredictiveTimeEstimationService: ObservableObject {
         }
     }
 
-    private func getTasksInDateRange(start: Date, end: Date) -> [Task] {
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+    private func getTasksInDateRange(start: Date, end: Date) -> [TaskEntity] {
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "date >= %@ AND date <= %@", start as NSDate, end as NSDate)
 
         do {

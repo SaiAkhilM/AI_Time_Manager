@@ -98,7 +98,7 @@ class AIService: ObservableObject {
                 }
             } else {
                 print("Chat completion failed with status: \((response as? HTTPURLResponse)?.statusCode ?? 0)")
-                if let data = data, let errorString = String(data: data, encoding: .utf8) {
+                if let errorString = String(data: data, encoding: .utf8) {
                     print("Error response: \(errorString)")
                 }
                 errorMessage = "AI request failed"
@@ -116,7 +116,7 @@ class AIService: ObservableObject {
     private func buildCurrentContext(context: NSManagedObjectContext) async -> String {
         var contextString = ""
 
-        let taskRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        let taskRequest: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         taskRequest.predicate = NSPredicate(format: "date >= %@ AND date <= %@",
                                            Calendar.current.startOfDay(for: Date()) as NSDate,
                                            Calendar.current.date(byAdding: .day, value: 7, to: Date()) as NSDate? ?? Date() as NSDate)
@@ -231,7 +231,7 @@ class AIService: ObservableObject {
                             let endTime = Calendar.current.date(byAdding: .hour, value: 1, to: fullDateTime)
 
                             await MainActor.run {
-                                let task = Task.create(
+                                let task = TaskEntity.create(
                                     in: context,
                                     title: taskTitle,
                                     description: nil,
@@ -276,39 +276,29 @@ class AIService: ObservableObject {
         case "tomorrow":
             return calendar.date(byAdding: .day, value: 1, to: today)
         case "monday":
-            return getNextWeekday(.monday, from: today)
+            return getNextWeekday(2, from: today)
         case "tuesday":
-            return getNextWeekday(.tuesday, from: today)
+            return getNextWeekday(3, from: today)
         case "wednesday":
-            return getNextWeekday(.wednesday, from: today)
+            return getNextWeekday(4, from: today)
         case "thursday":
-            return getNextWeekday(.thursday, from: today)
+            return getNextWeekday(5, from: today)
         case "friday":
-            return getNextWeekday(.friday, from: today)
+            return getNextWeekday(6, from: today)
         case "saturday":
-            return getNextWeekday(.saturday, from: today)
+            return getNextWeekday(7, from: today)
         case "sunday":
-            return getNextWeekday(.sunday, from: today)
+            return getNextWeekday(1, from: today)
         default:
             return nil
         }
     }
 
-    private func getNextWeekday(_ targetWeekday: Calendar.Component, from date: Date) -> Date? {
+    private func getNextWeekday(_ targetWeekday: Int, from date: Date) -> Date? {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: date)
 
-        let weekdayValue: Int
-        switch targetWeekday {
-        case .sunday: weekdayValue = 1
-        case .monday: weekdayValue = 2
-        case .tuesday: weekdayValue = 3
-        case .wednesday: weekdayValue = 4
-        case .thursday: weekdayValue = 5
-        case .friday: weekdayValue = 6
-        case .saturday: weekdayValue = 7
-        default: return nil
-        }
+        let weekdayValue = targetWeekday
 
         let currentWeekday = calendar.component(.weekday, from: today)
         let daysUntilTarget = (weekdayValue - currentWeekday + 7) % 7

@@ -132,7 +132,12 @@ class ContextAwareOptimizationService: ObservableObject {
         // Analyze energy optimization
         suggestions.append(createEnergyOptimization(metrics))
 
-        return suggestions.sorted { $0.impact.rawValue > $1.impact.rawValue }
+        return suggestions.sorted { suggestion1, suggestion2 in
+            let order: [OptimizationSuggestion.Impact] = [.critical, .high, .medium, .low]
+            let index1 = order.firstIndex(of: suggestion1.impact) ?? 999
+            let index2 = order.firstIndex(of: suggestion2.impact) ?? 999
+            return index1 < index2
+        }
     }
 
     private func createCompletionRateOptimization(_ metrics: ProductivityMetrics) -> OptimizationSuggestion {
@@ -267,7 +272,7 @@ class ContextAwareOptimizationService: ObservableObject {
         )
     }
 
-    private func calculateAverageTaskDuration(from tasks: [Task]) -> TimeInterval {
+    private func calculateAverageTaskDuration(from tasks: [TaskEntity]) -> TimeInterval {
         let tasksWithDuration = tasks.compactMap { task -> TimeInterval? in
             guard let start = task.startTime, let end = task.endTime else { return nil }
             return end.timeIntervalSince(start)
@@ -276,7 +281,7 @@ class ContextAwareOptimizationService: ObservableObject {
         return tasksWithDuration.isEmpty ? 3600 : tasksWithDuration.reduce(0, +) / Double(tasksWithDuration.count)
     }
 
-    private func calculatePeakProductivityHours(from tasks: [Task]) -> [Int] {
+    private func calculatePeakProductivityHours(from tasks: [TaskEntity]) -> [Int] {
         var hourlyCompletions: [Int: Int] = [:]
 
         for task in tasks {
@@ -290,11 +295,11 @@ class ContextAwareOptimizationService: ObservableObject {
         return Array(sortedHours.prefix(3).map { $0.key })
     }
 
-    private func analyzeCommonTaskTypes(from tasks: [Task]) -> [String: Int] {
+    private func analyzeCommonTaskTypes(from tasks: [TaskEntity]) -> [String: Int] {
         var taskTypes: [String: Int] = [:]
 
         for task in tasks {
-            guard let title = task.title else { continue }
+            let title = task.title
             let type = categorizeTask(title)
             taskTypes[type, default: 0] += 1
         }
@@ -322,7 +327,7 @@ class ContextAwareOptimizationService: ObservableObject {
         }
     }
 
-    private func calculateAverageBreakTime(from tasks: [Task]) -> TimeInterval {
+    private func calculateAverageBreakTime(from tasks: [TaskEntity]) -> TimeInterval {
         // Calculate gaps between consecutive tasks as potential break time
         let sortedTasks = tasks.compactMap { task -> (start: Date, end: Date)? in
             guard let start = task.startTime, let end = task.endTime else { return nil }
@@ -346,20 +351,20 @@ class ContextAwareOptimizationService: ObservableObject {
         return breakCount > 0 ? totalBreakTime / Double(breakCount) : 900 // Default 15 minutes
     }
 
-    private func calculateTotalWorkload(from tasks: [Task]) -> TimeInterval {
+    private func calculateTotalWorkload(from tasks: [TaskEntity]) -> TimeInterval {
         return tasks.compactMap { task -> TimeInterval? in
             guard let start = task.startTime, let end = task.endTime else { return nil }
             return end.timeIntervalSince(start)
         }.reduce(0, +)
     }
 
-    private func isTaskOverdue(_ task: Task) -> Bool {
+    private func isTaskOverdue(_ task: TaskEntity) -> Bool {
         guard let endTime = task.endTime else { return false }
         return !task.isCompleted && endTime < Date()
     }
 
-    private func getTasksInRange(_ dateRange: DateInterval) -> [Task] {
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+    private func getTasksInRange(_ dateRange: DateInterval) -> [TaskEntity] {
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "date >= %@ AND date <= %@",
                                        dateRange.start as NSDate,
                                        dateRange.end as NSDate)

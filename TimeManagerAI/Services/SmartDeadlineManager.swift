@@ -61,7 +61,7 @@ struct DeadlineRecommendation {
     enum Action {
         case extendDeadline(newDate: Date)
         case breakIntoSubtasks
-        case adjustPriority(newPriority: Task.Priority)
+        case adjustPriority(newPriority: TaskEntity.Priority)
         case reallocateResources
         case delegateTask
         case cancelTask
@@ -112,16 +112,22 @@ class SmartDeadlineManager: ObservableObject {
         var analyses: [DeadlineAnalysis] = []
 
         for task in tasks {
-            guard let taskId = task.id, let deadline = task.endTime else { continue }
+            let taskId = task.id
+            guard let deadline = task.endTime else { continue }
 
             let analysis = await analyzeTaskDeadline(task, deadline: deadline, in: dateRange)
             analyses.append(analysis)
         }
 
-        return analyses.sorted { $0.riskLevel.rawValue > $1.riskLevel.rawValue }
+        return analyses.sorted { analysis1, analysis2 in
+            let order: [DeadlineAnalysis.RiskLevel] = [.critical, .high, .medium, .low]
+            let index1 = order.firstIndex(of: analysis1.riskLevel) ?? 999
+            let index2 = order.firstIndex(of: analysis2.riskLevel) ?? 999
+            return index1 < index2
+        }
     }
 
-    private func analyzeTaskDeadline(_ task: Task, deadline: Date, in dateRange: DateInterval) async -> DeadlineAnalysis {
+    private func analyzeTaskDeadline(_ task: TaskEntity, deadline: Date, in dateRange: DateInterval) async -> DeadlineAnalysis {
         let now = Date()
         let timeToDeadline = deadline.timeIntervalSince(now)
         let estimatedDuration = estimateTaskDuration(task)
@@ -156,7 +162,7 @@ class SmartDeadlineManager: ObservableObject {
         )
 
         return DeadlineAnalysis(
-            taskId: task.id!,
+            taskId: task.id,
             currentDeadline: deadline,
             suggestedDeadline: suggestedDeadline,
             riskLevel: riskLevel,
@@ -166,7 +172,7 @@ class SmartDeadlineManager: ObservableObject {
         )
     }
 
-    private func calculateWorkloadPressure(for task: Task, in dateRange: DateInterval) -> Double {
+    private func calculateWorkloadPressure(for task: TaskEntity, in dateRange: DateInterval) -> Double {
         let allTasks = getTasksWithDeadlines(in: dateRange)
         let totalEstimatedWork = allTasks.compactMap { estimateTaskDuration($0) }.reduce(0, +)
         let availableTime = dateRange.duration
@@ -178,14 +184,14 @@ class SmartDeadlineManager: ObservableObject {
         switch task.priorityEnum {
         case .high: priorityMultiplier = 1.5
         case .medium: priorityMultiplier = 1.0
-        case .low: priorityMultiplier = 0.7
+        case .event: priorityMultiplier = 0.7
         case .none: priorityMultiplier = 0.8
         }
 
         return min(1.0, utilizationRate * priorityMultiplier)
     }
 
-    private func determineRiskLevel(timeToDeadline: TimeInterval, estimatedDuration: TimeInterval, workloadPressure: Double, task: Task) -> DeadlineAnalysis.RiskLevel {
+    private func determineRiskLevel(timeToDeadline: TimeInterval, estimatedDuration: TimeInterval, workloadPressure: Double, task: TaskEntity) -> DeadlineAnalysis.RiskLevel {
         let daysToDeadline = timeToDeadline / (24 * 3600)
         let estimatedDays = estimatedDuration / (8 * 3600) // Assuming 8-hour work days
 
@@ -208,13 +214,13 @@ class SmartDeadlineManager: ObservableObject {
         return .low
     }
 
-    private func findTaskDependencies(_ task: Task) -> [UUID] {
+    private func findTaskDependencies(_ task: TaskEntity) -> [UUID] {
         // In a real implementation, this would analyze task descriptions, titles, or explicit dependencies
         // For now, we'll return an empty array
         return []
     }
 
-    private func generateTaskRecommendations(for task: Task, riskLevel: DeadlineAnalysis.RiskLevel, workloadPressure: Double) -> [String] {
+    private func generateTaskRecommendations(for task: TaskEntity, riskLevel: DeadlineAnalysis.RiskLevel, workloadPressure: Double) -> [String] {
         var recommendations: [String] = []
 
         switch riskLevel {
@@ -249,7 +255,7 @@ class SmartDeadlineManager: ObservableObject {
         return recommendations
     }
 
-    private func suggestOptimalDeadline(for task: Task, currentDeadline: Date, estimatedDuration: TimeInterval, workloadPressure: Double) -> Date? {
+    private func suggestOptimalDeadline(for task: TaskEntity, currentDeadline: Date, estimatedDuration: TimeInterval, workloadPressure: Double) -> Date? {
         let now = Date()
         let timeToCurrentDeadline = currentDeadline.timeIntervalSince(now)
         let requiredBuffer = estimatedDuration * (1 + workloadPressure)
@@ -288,7 +294,8 @@ class SmartDeadlineManager: ObservableObject {
         }.reduce(0, +)
 
         let eventTime = events.compactMap { event -> TimeInterval? in
-            guard let start = event.startTime, let end = event.endTime else { return nil }
+            let start = event.startTime
+            let end = event.endTime
             return end.timeIntervalSince(start)
         }.reduce(0, +)
 
@@ -341,9 +348,15 @@ class SmartDeadlineManager: ObservableObject {
 
         return recommendations.sorted { recommendation1, recommendation2 in
             if recommendation1.urgency != recommendation2.urgency {
-                return recommendation1.urgency.rawValue > recommendation2.urgency.rawValue
+                let urgencyOrder: [DeadlineRecommendation.Urgency] = [.immediate, .high, .medium, .low]
+                let index1 = urgencyOrder.firstIndex(of: recommendation1.urgency) ?? 999
+                let index2 = urgencyOrder.firstIndex(of: recommendation2.urgency) ?? 999
+                return index1 < index2
             }
-            return recommendation1.impact.rawValue > recommendation2.impact.rawValue
+            let impactOrder: [DeadlineRecommendation.Impact] = [.major, .significant, .moderate, .minimal]
+            let impactIndex1 = impactOrder.firstIndex(of: recommendation1.impact) ?? 999
+            let impactIndex2 = impactOrder.firstIndex(of: recommendation2.impact) ?? 999
+            return impactIndex1 < impactIndex2
         }
     }
 
@@ -419,7 +432,7 @@ class SmartDeadlineManager: ObservableObject {
         )
     }
 
-    private func estimateTaskDuration(_ task: Task) -> TimeInterval {
+    private func estimateTaskDuration(_ task: TaskEntity) -> TimeInterval {
         if let start = task.startTime, let end = task.endTime {
             return end.timeIntervalSince(start)
         }
@@ -428,12 +441,12 @@ class SmartDeadlineManager: ObservableObject {
         return 3600 // Default 1 hour
     }
 
-    private func getTasksWithDeadlines(in dateRange: DateInterval) -> [Task] {
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+    private func getTasksWithDeadlines(in dateRange: DateInterval) -> [TaskEntity] {
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "endTime >= %@ AND endTime <= %@ AND isCompleted == NO",
                                        dateRange.start as NSDate,
                                        dateRange.end as NSDate)
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Task.endTime, ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \TaskEntity.endTime, ascending: true)]
 
         do {
             return try context.fetch(request)
@@ -443,8 +456,8 @@ class SmartDeadlineManager: ObservableObject {
         }
     }
 
-    private func getTasksForDate(_ date: Date) -> [Task] {
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+    private func getTasksForDate(_ date: Date) -> [TaskEntity] {
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         let startOfDay = Calendar.current.startOfDay(for: date)
         let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay) ?? date
 

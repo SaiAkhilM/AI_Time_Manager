@@ -283,7 +283,7 @@ struct OptimizationSuggestionCard: View {
                     .font(.headline)
                     .fontWeight(.semibold)
                 Spacer()
-                Text(suggestion.impact.rawValue.capitalized)
+                Text(String(describing: suggestion.impact).capitalized)
                     .font(.caption)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)

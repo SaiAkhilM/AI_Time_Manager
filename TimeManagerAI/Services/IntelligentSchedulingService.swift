@@ -23,7 +23,7 @@ struct TimeSlot {
     let endTime: Date
     let duration: TimeInterval
     let isAvailable: Bool
-    let conflictingTasks: [Task]
+    let conflictingTasks: [TaskEntity]
     let conflictingEvents: [Event]
 
     var quality: Double {
@@ -45,8 +45,8 @@ class IntelligentSchedulingService: ObservableObject {
         self.context = context
     }
 
-    func generateSchedulingSuggestions(for task: Task) async -> [SchedulingSuggestion] {
-        guard let taskId = task.id else { return [] }
+    func generateSchedulingSuggestions(for task: TaskEntity) async -> [SchedulingSuggestion] {
+        let taskId = task.id
 
         isAnalyzing = true
         defer { isAnalyzing = false }
@@ -84,7 +84,7 @@ class IntelligentSchedulingService: ObservableObject {
         return optimizedSchedule
     }
 
-    private func estimateTaskDuration(_ task: Task) -> TimeInterval {
+    private func estimateTaskDuration(_ task: TaskEntity) -> TimeInterval {
         if let startTime = task.startTime, let endTime = task.endTime {
             return endTime.timeIntervalSince(startTime)
         }
@@ -121,25 +121,26 @@ class IntelligentSchedulingService: ObservableObject {
         return 3600 // Default 1 hour
     }
 
-    private func getPriorityMultiplier(_ priority: Task.Priority) -> Double {
+    private func getPriorityMultiplier(_ priority: TaskEntity.Priority) -> Double {
         switch priority {
         case .high: return 1.2
         case .medium: return 1.0
-        case .low: return 0.8
+        case .event: return 0.9
         case .none: return 1.0
         }
     }
 
-    private func getHistoricalDurationForSimilarTasks(_ task: Task) -> TimeInterval {
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+    private func getHistoricalDurationForSimilarTasks(_ task: TaskEntity) -> TimeInterval {
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "isCompleted == YES AND startTime != nil AND endTime != nil")
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Task.createdAt, ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \TaskEntity.createdAt, ascending: false)]
         request.fetchLimit = 10
 
         do {
             let completedTasks = try context.fetch(request)
             let similarTasks = completedTasks.filter { completedTask in
-                guard let title = completedTask.title, let currentTitle = task.title else { return false }
+                let title = completedTask.title
+                let currentTitle = task.title
                 return calculateSimilarity(title, currentTitle) > 0.5
             }
 
@@ -147,7 +148,7 @@ class IntelligentSchedulingService: ObservableObject {
                 let totalDuration = similarTasks.compactMap { task in
                     guard let start = task.startTime, let end = task.endTime else { return nil }
                     return end.timeIntervalSince(start)
-                }.reduce(0, +)
+                }.reduce(0.0, +)
 
                 return totalDuration / Double(similarTasks.count)
             }
@@ -208,9 +209,9 @@ class IntelligentSchedulingService: ObservableObject {
 
         // Add event intervals
         for event in events {
-            if let startTime = event.startTime, let endTime = event.endTime {
-                occupiedIntervals.append((start: startTime, end: endTime))
-            }
+            let startTime = event.startTime
+            let endTime = event.endTime
+            occupiedIntervals.append((start: startTime, end: endTime))
         }
 
         // Sort intervals by start time
@@ -258,7 +259,7 @@ class IntelligentSchedulingService: ObservableObject {
         return availableSlots
     }
 
-    private func prioritizeTimeSlots(_ slots: [TimeSlot], for task: Task) -> [TimeSlot] {
+    private func prioritizeTimeSlots(_ slots: [TimeSlot], for task: TaskEntity) -> [TimeSlot] {
         return slots.sorted { slot1, slot2 in
             let score1 = calculateSlotScore(slot1, for: task)
             let score2 = calculateSlotScore(slot2, for: task)
@@ -266,7 +267,7 @@ class IntelligentSchedulingService: ObservableObject {
         }
     }
 
-    private func calculateSlotScore(_ slot: TimeSlot, for task: Task) -> Double {
+    private func calculateSlotScore(_ slot: TimeSlot, for task: TaskEntity) -> Double {
         var score = slot.quality
 
         // Prefer morning slots for high priority tasks
@@ -334,7 +335,7 @@ class IntelligentSchedulingService: ObservableObject {
         }
     }
 
-    private func analyzeAndOptimizeSchedule(tasks: [Task], events: [Event], date: Date) async -> [SchedulingSuggestion] {
+    private func analyzeAndOptimizeSchedule(tasks: [TaskEntity], events: [Event], date: Date) async -> [SchedulingSuggestion] {
         var suggestions: [SchedulingSuggestion] = []
 
         // Look for scheduling conflicts and optimization opportunities
@@ -343,7 +344,8 @@ class IntelligentSchedulingService: ObservableObject {
 
         // Generate suggestions to resolve conflicts
         for conflict in conflicts {
-            if let task = conflict as? Task, let taskId = task.id {
+            if let task = conflict as? TaskEntity {
+                let taskId = task.id
                 let duration = estimateTaskDuration(task)
                 let alternativeSlots = findAvailableTimeSlots(
                     duration: duration,
@@ -369,7 +371,7 @@ class IntelligentSchedulingService: ObservableObject {
         return suggestions
     }
 
-    private func createTimeItems(from tasks: [Task], events: [Event]) -> [(start: Date, end: Date, item: Any)] {
+    private func createTimeItems(from tasks: [TaskEntity], events: [Event]) -> [(start: Date, end: Date, item: Any)] {
         var items: [(start: Date, end: Date, item: Any)] = []
 
         for task in tasks {
@@ -379,9 +381,9 @@ class IntelligentSchedulingService: ObservableObject {
         }
 
         for event in events {
-            if let start = event.startTime, let end = event.endTime {
-                items.append((start: start, end: end, item: event))
-            }
+            let start = event.startTime
+            let end = event.endTime
+            items.append((start: start, end: end, item: event))
         }
 
         return items.sorted { $0.start < $1.start }
@@ -405,13 +407,13 @@ class IntelligentSchedulingService: ObservableObject {
         return conflicts
     }
 
-    private func getTasksForDate(_ date: Date) -> [Task] {
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
+    private func getTasksForDate(_ date: Date) -> [TaskEntity] {
+        let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         let startOfDay = Calendar.current.startOfDay(for: date)
         let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay) ?? date
 
         request.predicate = NSPredicate(format: "date >= %@ AND date < %@", startOfDay as NSDate, endOfDay as NSDate)
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Task.startTime, ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \TaskEntity.startTime, ascending: true)]
 
         do {
             return try context.fetch(request)
