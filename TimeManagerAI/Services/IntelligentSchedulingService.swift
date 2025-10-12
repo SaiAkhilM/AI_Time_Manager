@@ -59,7 +59,7 @@ class IntelligentSchedulingService: ObservableObject {
         )
 
         let prioritizedSlots = prioritizeTimeSlots(availableSlots, for: task)
-        let suggestions = createSuggestions(from: prioritizedSlots, for: taskId, duration: taskDuration)
+        let suggestions = createSuggestions(from: prioritizedSlots, for: taskId ?? UUID(), duration: taskDuration)
 
         DispatchQueue.main.async {
             self.suggestions = suggestions
@@ -140,8 +140,8 @@ class IntelligentSchedulingService: ObservableObject {
             let completedTasks = try context.fetch(request)
             let similarTasks = completedTasks.filter { completedTask in
                 let title = completedTask.title
-                let currentTitle = task.title
-                return calculateSimilarity(title, currentTitle) > 0.5
+                let currentTitle = task.title ?? ""
+                return calculateSimilarity(title ?? "", currentTitle) > 0.5
             }
 
             if !similarTasks.isEmpty {
@@ -209,8 +209,8 @@ class IntelligentSchedulingService: ObservableObject {
 
         // Add event intervals
         for event in events {
-            let startTime = event.startTime
-            let endTime = event.endTime
+            let startTime = event.startTime ?? Date()
+            let endTime = event.endTime ?? Date()
             occupiedIntervals.append((start: startTime, end: endTime))
         }
 
@@ -355,7 +355,7 @@ class IntelligentSchedulingService: ObservableObject {
 
                 if let bestSlot = alternativeSlots.first {
                     let suggestion = SchedulingSuggestion(
-                        taskId: taskId,
+                        taskId: taskId ?? UUID(),
                         suggestedStartTime: bestSlot.startTime,
                         suggestedEndTime: bestSlot.startTime.addingTimeInterval(duration),
                         confidence: 0.8,
@@ -381,8 +381,8 @@ class IntelligentSchedulingService: ObservableObject {
         }
 
         for event in events {
-            let start = event.startTime
-            let end = event.endTime
+            let start = event.startTime ?? Date()
+            let end = event.endTime ?? Date()
             items.append((start: start, end: end, item: event))
         }
 

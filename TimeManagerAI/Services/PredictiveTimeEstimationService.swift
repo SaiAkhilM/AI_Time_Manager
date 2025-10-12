@@ -141,7 +141,7 @@ class PredictiveTimeEstimationService: ObservableObject {
     }
 
     func estimateExistingTask(_ task: TaskEntity) async -> TimeEstimate {
-        let title = task.title ?? "Untitled Task"
+        let title = task.title ?? "Task" ?? "Untitled Task"
         let description = task.taskDescription
         let priority = task.priorityEnum
         let scheduledTime = task.startTime
@@ -239,7 +239,7 @@ class PredictiveTimeEstimationService: ObservableObject {
         var typeGroups: [String: [TimeInterval]] = [:]
 
         for task in tasks {
-            let title = task.title
+            let title = task.title ?? "Task"
             guard let start = task.startTime,
                   let end = task.endTime else { continue }
 
@@ -482,7 +482,7 @@ class PredictiveTimeEstimationService: ObservableObject {
         do {
             let completedTasks = try context.fetch(request)
             return completedTasks.filter { task in
-                let taskTitle = task.title
+                let taskTitle = task.title ?? "Task"
                 let similarity = calculateTaskSimilarity(title, taskTitle)
                 return similarity > 0.4 || categorizeTask(taskTitle) == taskType
             }

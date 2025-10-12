@@ -148,7 +148,7 @@ class DocumentViewModel: ObservableObject {
 
                 let startTime = event.startTime
                 let dateText = NSAttributedString(
-                    string: "\(startTime.formatted(.dateTime.month().day())) - ",
+                    string: "\(startTime?.formatted(.dateTime.month().day()) ?? "") - ",
                     attributes: timeStyle
                 )
                 document.append(dateText)
@@ -193,7 +193,7 @@ class DocumentViewModel: ObservableObject {
                 var titleAttributes = taskStyle
                 titleAttributes[.foregroundColor] = task.priorityEnum.uiColor
 
-                let titleText = NSAttributedString(string: task.title, attributes: titleAttributes)
+                let titleText = NSAttributedString(string: task.title ?? "Untitled Task", attributes: titleAttributes)
                 document.append(titleText)
 
                 if task.isCompleted {

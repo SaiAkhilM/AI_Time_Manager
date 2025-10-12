@@ -299,7 +299,7 @@ class ContextAwareOptimizationService: ObservableObject {
         var taskTypes: [String: Int] = [:]
 
         for task in tasks {
-            let title = task.title
+            let title = task.title ?? "Task"
             let type = categorizeTask(title)
             taskTypes[type, default: 0] += 1
         }

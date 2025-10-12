@@ -18,7 +18,7 @@ class LiveActivityService: ObservableObject {
             return
         }
 
-        let attributes = TaskAttributes(taskId: task.id.uuidString)
+        let attributes = TaskAttributes(taskId: task.id?.uuidString ?? UUID().uuidString)
         let contentState = TaskAttributes.ContentState(
             taskTitle: task.title ?? "Untitled Task",
             startTime: task.startTime ?? Date(),

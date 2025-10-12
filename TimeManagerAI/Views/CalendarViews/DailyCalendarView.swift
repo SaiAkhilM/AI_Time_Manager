@@ -81,7 +81,7 @@ struct DailyCalendarView: View {
 
     private func getEventsForHour(_ hour: Int) -> [Event] {
         return calendarViewModel.events.filter { event in
-            let startTime = event.startTime
+            let startTime = event.startTime ?? Date()
             let eventHour = Calendar.current.component(.hour, from: startTime)
             return eventHour == hour
         }
@@ -184,7 +184,7 @@ struct RealTaskBlock: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text(task.title.isEmpty ? "Untitled Task" : task.title)
+                Text((task.title ?? "").isEmpty ? "Untitled Task" : (task.title ?? "Untitled Task"))
                     .font(.caption)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
@@ -224,14 +224,14 @@ struct RealEventBlock: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text(event.title.isEmpty ? "Untitled Event" : event.title)
+                Text((event.title ?? "").isEmpty ? "Untitled Event" : (event.title ?? "Untitled Event"))
                     .font(.caption)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
                     .lineLimit(1)
 
-                let startTime = event.startTime
-                let endTime = event.endTime
+                let startTime = event.startTime ?? Date()
+                let endTime = event.endTime ?? Date()
                 if true {
                     Text("\(startTime, format: .dateTime.hour().minute()) - \(endTime, format: .dateTime.hour().minute())")
                         .font(.caption2)

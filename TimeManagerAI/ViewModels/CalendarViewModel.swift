@@ -337,7 +337,7 @@ class CalendarViewModel: ObservableObject {
         predictiveTimeEstimationService.updateEstimationAccuracy(
             actualDuration: actualDuration,
             estimatedDuration: estimatedDuration,
-            taskTitle: title
+            taskTitle: title ?? "Untitled Task"
         )
     }
 }

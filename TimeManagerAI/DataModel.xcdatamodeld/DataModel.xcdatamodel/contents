@@ -15,8 +15,8 @@
         <attribute name="actualDuration" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="createdAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="updatedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="parentTask" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="subtasks"/>
-        <relationship name="subtasks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Task" inverseName="parentTask"/>
+        <relationship name="parentTask" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="subtasks" inverseEntity="Task"/>
+        <relationship name="subtasks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Task" inverseName="parentTask" inverseEntity="Task"/>
         <relationship name="recurrencePattern" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RecurrencePattern" inverseName="task"/>
         <relationship name="goal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Goal" inverseName="tasks"/>
     </entity>

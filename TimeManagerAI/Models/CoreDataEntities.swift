@@ -6,10 +6,10 @@ import CoreData
 @objc(TaskEntity)
 public class TaskEntity: NSManagedObject {
     // Core Data will automatically synthesize these properties
-    @NSManaged public var id: UUID
-    @NSManaged public var title: String
+    @NSManaged public var id: UUID?
+    @NSManaged public var title: String?
     @NSManaged public var taskDescription: String?
-    @NSManaged public var priority: String
+    @NSManaged public var priority: String?
     @NSManaged public var startTime: Date?
     @NSManaged public var endTime: Date?
     @NSManaged public var date: Date?
@@ -18,8 +18,8 @@ public class TaskEntity: NSManagedObject {
     @NSManaged public var linkedURL: String?
     @NSManaged public var estimatedDuration: Int32
     @NSManaged public var actualDuration: Int32
-    @NSManaged public var createdAt: Date
-    @NSManaged public var updatedAt: Date
+    @NSManaged public var createdAt: Date?
+    @NSManaged public var updatedAt: Date?
     @NSManaged public var parentTask: TaskEntity?
     @NSManaged public var subtasks: NSSet?
     @NSManaged public var recurrencePattern: RecurrencePattern?
@@ -28,17 +28,17 @@ public class TaskEntity: NSManagedObject {
 
 @objc(Event)
 public class Event: NSManagedObject {
-    @NSManaged public var id: UUID
-    @NSManaged public var title: String
+    @NSManaged public var id: UUID?
+    @NSManaged public var title: String?
     @NSManaged public var eventDescription: String?
-    @NSManaged public var startTime: Date
-    @NSManaged public var endTime: Date
+    @NSManaged public var startTime: Date?
+    @NSManaged public var endTime: Date?
     @NSManaged public var isRecurring: Bool
     @NSManaged public var location: String?
     @NSManaged public var isMovable: Bool
-    @NSManaged public var priority: String
-    @NSManaged public var createdAt: Date
-    @NSManaged public var updatedAt: Date
+    @NSManaged public var priority: String?
+    @NSManaged public var createdAt: Date?
+    @NSManaged public var updatedAt: Date?
     @NSManaged public var recurrencePattern: RecurrencePattern?
 }
 
