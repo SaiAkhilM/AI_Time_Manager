@@ -162,7 +162,7 @@ class SmartDeadlineManager: ObservableObject {
         )
 
         return DeadlineAnalysis(
-            taskId: task.id,
+            taskId: task.id ?? UUID(),
             currentDeadline: deadline,
             suggestedDeadline: suggestedDeadline,
             riskLevel: riskLevel,
@@ -294,8 +294,8 @@ class SmartDeadlineManager: ObservableObject {
         }.reduce(0, +)
 
         let eventTime = events.compactMap { event -> TimeInterval? in
-            let start = event.startTime
-            let end = event.endTime
+            let start = event.startTime ?? Date()
+            let end = event.endTime ?? Date()
             return end.timeIntervalSince(start)
         }.reduce(0, +)
 

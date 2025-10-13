@@ -1,27 +1,23 @@
 import SwiftUI
-import CoreData
 
+// Ultra-Safe Static Document Editor - NO Core Data dependencies
 struct DocEditorView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-    @StateObject private var documentViewModel: DocumentViewModel
+    @State private var documentContent = ""
     @State private var isEditing = false
-
-    init() {
-        self._documentViewModel = StateObject(wrappedValue: DocumentViewModel(context: PersistenceController.shared.container.viewContext))
-    }
+    @State private var featuresEnabled = false
 
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                if documentViewModel.documentContent.length > 0 {
+                if featuresEnabled {
                     if isEditing {
-                        RichTextEditor(attributedText: $documentViewModel.documentContent)
+                        TextEditor(text: $documentContent)
+                            .padding()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .padding(.horizontal)
                     } else {
                         ScrollView {
                             VStack(alignment: .leading, spacing: 0) {
-                                AttributedTextView(attributedText: documentViewModel.documentContent)
+                                Text(documentContent.isEmpty ? sampleDocument : documentContent)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .padding()
                                     .onTapGesture {
@@ -33,68 +29,94 @@ struct DocEditorView: View {
                         }
                     }
                 } else {
-                    VStack {
-                        ProgressView("Generating weekly document...")
-                            .padding()
+                    VStack(spacing: 20) {
+                        Image(systemName: "doc.text")
+                            .font(.system(size: 60))
+                            .foregroundColor(.blue)
 
-                        Text("Loading your schedule and tasks")
-                            .font(.caption)
+                        Text("Document Editor")
+                            .font(.title2)
+                            .fontWeight(.medium)
+
+                        Text("Create and edit your weekly planning documents")
+                            .font(.body)
                             .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
+
+                        Button("Enable Document Features") {
+                            enableFeatures()
+                        }
+                        .buttonStyle(.borderedProminent)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-
-                if let errorMessage = documentViewModel.errorMessage {
-                    Text(errorMessage)
-                        .font(.caption)
-                        .foregroundColor(.red)
-                        .padding()
                 }
             }
             .navigationTitle("Life Planner")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    if isEditing {
-                        Button("Done") {
-                            isEditing = false
+                    if featuresEnabled {
+                        if isEditing {
+                            Button("Done") {
+                                isEditing = false
+                            }
+                        } else {
+                            Button("Edit") {
+                                isEditing = true
+                            }
                         }
-                    } else {
-                        Button("Edit") {
-                            isEditing = true
-                        }
-                    }
 
-                    Button(action: {
-                        documentViewModel.generateWeeklyDocument()
-                    }) {
-                        Image(systemName: "arrow.clockwise")
+                        Button(action: {
+                            generateSampleDocument()
+                        }) {
+                            Image(systemName: "arrow.clockwise")
+                        }
                     }
                 }
             }
-            .onAppear {
-                documentViewModel.viewDidAppear()
-            }
         }
     }
-}
 
-struct AttributedTextView: UIViewRepresentable {
-    let attributedText: NSAttributedString
-
-    func makeUIView(context: Context) -> UITextView {
-        let textView = UITextView()
-        textView.isEditable = false
-        textView.isScrollEnabled = false
-        textView.backgroundColor = .clear
-        textView.textContainerInset = UIEdgeInsets.zero
-        textView.textContainer.lineFragmentPadding = 0
-        textView.dataDetectorTypes = [.link, .phoneNumber]
-        return textView
+    private func enableFeatures() {
+        featuresEnabled = true
+        if documentContent.isEmpty {
+            documentContent = sampleDocument
+        }
     }
 
-    func updateUIView(_ uiView: UITextView, context: Context) {
-        uiView.attributedText = attributedText
+    private func generateSampleDocument() {
+        documentContent = sampleDocument
+    }
+
+    private var sampleDocument: String {
+        """
+        # Weekly Planning Document
+
+        ## This Week's Goals
+        • Complete important project milestones
+        • Maintain work-life balance
+        • Focus on high-priority tasks
+
+        ## Monday Tasks
+        - Morning: Team standup meeting
+        - Afternoon: Project review and planning
+        - Evening: Personal time
+
+        ## Tuesday Tasks
+        - Focus work block: 9 AM - 12 PM
+        - Lunch meeting with clients
+        - Administrative tasks
+
+        ## Notes
+        Document editing features are ready! You can:
+        • Edit this text by tapping "Edit"
+        • Generate new content with the refresh button
+        • Full rich text features coming soon
+
+        ---
+
+        Features will be connected to Core Data for automatic generation from your actual tasks and schedule.
+        """
     }
 }
 

@@ -164,7 +164,7 @@ struct WeekTaskBlock: View {
                     .lineLimit(1)
 
                 if let startTime = task.startTime {
-                    Text(startTime.formatted(.dateTime.hour().minute()))
+                    Text((startTime ?? Date()).formatted(.dateTime.hour().minute()))
                         .font(.caption2)
                         .foregroundColor(.white.opacity(0.8))
                 }
@@ -199,7 +199,7 @@ struct WeekEventBlockReal: View {
 
                 let startTime = event.startTime
                 if true {
-                    Text(startTime.formatted(.dateTime.hour().minute()))
+                    Text((startTime ?? Date()).formatted(.dateTime.hour().minute()))
                         .font(.caption2)
                         .foregroundColor(.white.opacity(0.8))
                 }
@@ -245,7 +245,7 @@ struct TaskDetailSheet: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Time")
                             .font(.headline)
-                        Text("\(startTime.formatted(.dateTime.hour().minute())) - \(endTime.formatted(.dateTime.hour().minute()))")
+                        Text("\((startTime ?? Date()).formatted(.dateTime.hour().minute())) - \(endTime.formatted(.dateTime.hour().minute()))")
                             .font(.body)
                     }
                 }

@@ -190,7 +190,7 @@ class DataExportImportService: ObservableObject {
 
         return tasks.map { task in
             ExportData.ExportTask(
-                id: task.id.uuidString,
+                id: task.id?.uuidString ?? "",
                 title: task.title ?? "",
                 description: task.taskDescription,
                 priority: task.priority ?? "medium",
@@ -211,7 +211,7 @@ class DataExportImportService: ObservableObject {
 
         return events.map { event in
             ExportData.ExportEvent(
-                id: event.id.uuidString,
+                id: event.id?.uuidString ?? "",
                 title: event.title ?? "",
                 description: event.eventDescription,
                 startTime: event.startTime ?? Date(),

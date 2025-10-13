@@ -5,7 +5,7 @@ struct VoiceAgentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @StateObject private var viewModel = VoiceAgentViewModel()
 
-    var body: some View {
+    var body: some View  {
         NavigationView {
             VStack(spacing: 30) {
                 topicSection
