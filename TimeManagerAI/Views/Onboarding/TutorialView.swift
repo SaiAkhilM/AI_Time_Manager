@@ -291,26 +291,6 @@ struct TutorialProgressView: View {
     }
 }
 
-// Tutorial trigger views
-struct TutorialTriggerView: View {
-    @AppStorage("hasCompletedTutorial") private var hasCompletedTutorial = false
-    @State private var showingTutorial = false
-
-    var body: some View {
-        EmptyView()
-            .onAppear {
-                if !hasCompletedTutorial {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                        showingTutorial = true
-                    }
-                }
-            }
-            .fullScreenCover(isPresented: $showingTutorial) {
-                TutorialView()
-            }
-    }
-}
-
 // Feature highlight views
 struct FeatureHighlightView: View {
     let feature: Feature
