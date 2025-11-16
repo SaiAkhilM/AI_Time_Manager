@@ -23,6 +23,7 @@
 		1D4A5A7A2C9F8E5A0012345F /* RichTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A792C9F8E5A0012345F /* RichTextEditor.swift */; };
 		1D4A5A7C2C9F8E5A00123460 /* AIInsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A7B2C9F8E5A00123460 /* AIInsightsView.swift */; };
 		1D4A5A7E2C9F8E5A00123461 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A7D2C9F8E5A00123461 /* SettingsView.swift */; };
+		1D4A5AC12C9F8E5A00123491 /* LazyViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5AC02C9F8E5A00123490 /* LazyViews.swift */; };
 		1D4A5A802C9F8E5A00123462 /* CalendarContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A7F2C9F8E5A00123462 /* CalendarContainerView.swift */; };
 		1D4A5A822C9F8E5A00123463 /* DailyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A812C9F8E5A00123463 /* DailyCalendarView.swift */; };
 		1D4A5A842C9F8E5A00123464 /* WeeklyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A832C9F8E5A00123464 /* WeeklyCalendarView.swift */; };
@@ -30,6 +31,7 @@
 		1D4A5A882C9F8E5A00123466 /* YearlyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A872C9F8E5A00123466 /* YearlyCalendarView.swift */; };
 		1D4A5A8A2C9F8E5A00123467 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A892C9F8E5A00123467 /* OnboardingView.swift */; };
 		1D4A5A8C2C9F8E5A00123468 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A8B2C9F8E5A00123468 /* TutorialView.swift */; };
+		1D4A5A602C9F8E5A00123457 /* TutorialTriggerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A5F2C9F8E5A00123457 /* TutorialTriggerView.swift */; };
 		1D4A5A8E2C9F8E5A00123469 /* DataManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A8D2C9F8E5A00123469 /* DataManagementView.swift */; };
 		1D4A5A902C9F8E5A0012346A /* AnimatedComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A8F2C9F8E5A0012346A /* AnimatedComponents.swift */; };
 		1D4A5A922C9F8E5A0012346B /* VoiceAgentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4A5A912C9F8E5A0012346B /* VoiceAgentViewModel.swift */; };
@@ -69,6 +71,7 @@
 		1D4A5A792C9F8E5A0012345F /* RichTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextEditor.swift; sourceTree = "<group>"; };
 		1D4A5A7B2C9F8E5A00123460 /* AIInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIInsightsView.swift; sourceTree = "<group>"; };
 		1D4A5A7D2C9F8E5A00123461 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		1D4A5AC02C9F8E5A00123490 /* LazyViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyViews.swift; sourceTree = "<group>"; };
 		1D4A5A7F2C9F8E5A00123462 /* CalendarContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarContainerView.swift; sourceTree = "<group>"; };
 		1D4A5A812C9F8E5A00123463 /* DailyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCalendarView.swift; sourceTree = "<group>"; };
 		1D4A5A832C9F8E5A00123464 /* WeeklyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCalendarView.swift; sourceTree = "<group>"; };
@@ -76,6 +79,7 @@
 		1D4A5A872C9F8E5A00123466 /* YearlyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YearlyCalendarView.swift; sourceTree = "<group>"; };
 		1D4A5A892C9F8E5A00123467 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		1D4A5A8B2C9F8E5A00123468 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		1D4A5A5F2C9F8E5A00123457 /* TutorialTriggerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialTriggerView.swift; sourceTree = "<group>"; };
 		1D4A5A8D2C9F8E5A00123469 /* DataManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagementView.swift; sourceTree = "<group>"; };
 		1D4A5A8F2C9F8E5A0012346A /* AnimatedComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedComponents.swift; sourceTree = "<group>"; };
 		1D4A5A912C9F8E5A0012346B /* VoiceAgentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceAgentViewModel.swift; sourceTree = "<group>"; };
@@ -180,6 +184,7 @@
 				1D4A5A7B2C9F8E5A00123460 /* AIInsightsView.swift */,
 				1D4A5A7D2C9F8E5A00123461 /* SettingsView.swift */,
 				1D4A5AB62C9F8E5A00123481 /* CalendarViews */,
+				1D4A5AC02C9F8E5A00123490 /* LazyViews.swift */,
 				1D4A5AB72C9F8E5A00123482 /* Onboarding */,
 				1D4A5AB82C9F8E5A00123483 /* Settings */,
 				1D4A5AB92C9F8E5A00123484 /* Components */,
@@ -204,6 +209,7 @@
 			children = (
 				1D4A5A892C9F8E5A00123467 /* OnboardingView.swift */,
 				1D4A5A8B2C9F8E5A00123468 /* TutorialView.swift */,
+				1D4A5A5F2C9F8E5A00123457 /* TutorialTriggerView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -353,36 +359,7 @@
 				1D4A5A7A2C9F8E5A0012345F /* RichTextEditor.swift in Sources */,
 				1D4A5A7C2C9F8E5A00123460 /* AIInsightsView.swift in Sources */,
 				1D4A5A7E2C9F8E5A00123461 /* SettingsView.swift in Sources */,
-				1D4A5A802C9F8E5A00123462 /* CalendarContainerView.swift in Sources */,
-				1D4A5A822C9F8E5A00123463 /* DailyCalendarView.swift in Sources */,
-				1D4A5A842C9F8E5A00123464 /* WeeklyCalendarView.swift in Sources */,
-				1D4A5A862C9F8E5A00123465 /* MonthlyCalendarView.swift in Sources */,
-				1D4A5A882C9F8E5A00123466 /* YearlyCalendarView.swift in Sources */,
-				1D4A5A8A2C9F8E5A00123467 /* OnboardingView.swift in Sources */,
-				1D4A5A8C2C9F8E5A00123468 /* TutorialView.swift in Sources */,
-				1D4A5A8E2C9F8E5A00123469 /* DataManagementView.swift in Sources */,
-				1D4A5A902C9F8E5A0012346A /* AnimatedComponents.swift in Sources */,
-				1D4A5A922C9F8E5A0012346B /* VoiceAgentViewModel.swift in Sources */,
-				1D4A5A942C9F8E5A0012346C /* CalendarViewModel.swift in Sources */,
-				1D4A5A962C9F8E5A0012346D /* DocumentViewModel.swift in Sources */,
-				1D4A5A982C9F8E5A0012346E /* VoiceService.swift in Sources */,
-				1D4A5A9A2C9F8E5A0012346F /* AIService.swift in Sources */,
-				1D4A5A9C2C9F8E5A00123470 /* TextToSpeechService.swift in Sources */,
-				1D4A5A9E2C9F8E5A00123471 /* NotificationService.swift in Sources */,
-				1D4A5AA02C9F8E5A00123472 /* LiveActivityService.swift in Sources */,
-				1D4A5AA22C9F8E5A00123473 /* IntelligentSchedulingService.swift in Sources */,
-				1D4A5AA42C9F8E5A00123474 /* ContextAwareOptimizationService.swift in Sources */,
-				1D4A5AA62C9F8E5A00123475 /* SmartDeadlineManager.swift in Sources */,
-				1D4A5AA82C9F8E5A00123476 /* PredictiveTimeEstimationService.swift in Sources */,
-				1D4A5AAA2C9F8E5A00123477 /* DataExportImportService.swift in Sources */,
-				1D4A5AAC2C9F8E5A00123478 /* TaskActivityWidget.swift in Sources */,
-				1D4A5AAE2C9F8E5A00123479 /* TaskActivityWidgetBundle.swift in Sources */,
-				1D4A5AB02C9F8E5A00123480 /* PersistenceController.swift in Sources */,
-				1D4A5A762C9F8E5A0012345D /* VoiceAgentView.swift in Sources */,
-				1D4A5A782C9F8E5A0012345E /* DocEditorView.swift in Sources */,
-				1D4A5A7A2C9F8E5A0012345F /* RichTextEditor.swift in Sources */,
-				1D4A5A7C2C9F8E5A00123460 /* AIInsightsView.swift in Sources */,
-				1D4A5A7E2C9F8E5A00123461 /* SettingsView.swift in Sources */,
+				1D4A5AC12C9F8E5A00123491 /* LazyViews.swift in Sources */,
 				1D4A5A802C9F8E5A00123462 /* CalendarContainerView.swift in Sources */,
 				1D4A5A822C9F8E5A00123463 /* DailyCalendarView.swift in Sources */,
 				1D4A5A842C9F8E5A00123464 /* WeeklyCalendarView.swift in Sources */,
